@@ -76,8 +76,6 @@ public class LeaderController {
 			return "logged/new_leader";
     	}
     	
-    	
-    	
     	String mensajeFlash = (leader.getId() != null)? "Dirigente editado con exito" : "Dirigente creado con exito";
     	leaderService.save(leader);
     	//status.setComplete();
@@ -85,6 +83,26 @@ public class LeaderController {
     	return "redirect:/home";
     	
     }
+    
+    @RequestMapping(value="/{id}")
+	public String editar(@PathVariable(value="id")Long id,Model model ,RedirectAttributes flash) {
+    	Leader leader = null;
+    	
+    	if(id > 0) {
+			leader = leaderService.findById(id);
+			if(leader == null) {
+				flash.addFlashAttribute("error", "El ID del dirigente no existe en la BBDD!");
+				return "redirect:/listar-dirigentesr";
+			}
+		} else {
+			flash.addFlashAttribute("error", "El ID del dirigente no puede ser cero!");
+			return "redirect:/listar-dirigentes";
+		}
+    	
+    	model.addAttribute("leader", leader);
+    	model.addAttribute("title", "Editar Dirigente");
+    	return "logged/new_leader";
+	}
 
     @RequestMapping(value="/listar-dirigentes")
     public String listarDirigentes(@RequestParam(name="page", defaultValue = "0") int page, Model model) {

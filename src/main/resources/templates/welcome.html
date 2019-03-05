@@ -2,12 +2,61 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="layout/layout :: head"></head>
 <body>
-    <header th:replace="layout/layout :: header"></header>
-    <h1> Hello World</h1>
+	<header th:replace="layout/layout :: header"></header>
+	
+	
+	<section id="about" class="bg2">
+		<a name="Sobre"></a>
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 mx-auto">
 
-    <img
-            th:src="@{images/twitter-logo.png}" height="42" width="42"/>
+					<h2 class="c-center2">SOBRE EL HACKATÓN</h2>
 
-    <footer th:replace="layout/layout :: footer"></footer>
+					<p class="c-p">
+						<b>Startup Challenge Hackathon</b> es un evento competencia de un
+						fin de semana completo con el objetivo de construir soluciones
+						innovadoras a problemas existentes a través de la tecnología y de
+						crear empresas globales desde la República Dominicana.
+					</p>
+
+					<p class="c-p">
+						<b>Startup Challenge Hackathon Santiago</b> estará focalizado en
+						emprendimiento tecnológico / negocios digitales.
+					</p>
+
+					<p class="c-p">
+						<b>Emprendimiento Tecnológico</b> es un emprendimiento de negocios
+						cuya base es la tecnología, por ejemplo: una página web o una
+						aplicación, una tienda virtual, un software, un portal educativo o
+						cualquier otro tipo de emprendimiento que utilice tecnología como
+						medio de negocios.
+					</p>
+
+					<p class="big-title2">Este evento está dirigido a:
+						emprendedores, programadores, diseñadores, profesionales y
+						estudiantes.</p>
+
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	
+	<section class="bg3">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto">
+            
+            <p class="big-title2">
+              Ven con tu idea de negocios o únete a un equipo en el evento y hazla realidad.
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+	<footer th:replace="layout/layout :: footer"></footer>
 </body>
 </html>

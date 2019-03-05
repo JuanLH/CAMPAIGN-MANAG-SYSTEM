@@ -15,6 +15,8 @@
 	crossorigin="anonymous">
 <link rel="stylesheet" th:href="@{/css/my-style.css}" />
 <link rel="stylesheet" th:href="@{/css/simple-sidebar.css}" />
+<link rel="stylesheet" th:href="@{/css/main.css}" />
+<link rel="stylesheet" th:href="@{/css/scrolling-nav.css}" />
 </head>
 
 <body>
@@ -22,7 +24,7 @@
 		<nav class="navbar navbar-expand-md navbar-dark bg-dark">
 
 			<div class="mx-auto order-0">
-				<a class="navbar-brand mx-auto" href="#">Online Data
+				<a class="navbar-brand mx-auto" href="#">Carlos Rodriguez
 					<h3 th:text="${session.nombre}"></h3>
 				</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -43,9 +45,9 @@
 							src="/images/instagram-logo.png" height="42" width="42" />
 					</a></li>
 					<li class="nav-item active"><a class="nav-link font"
-						th:href="@{/registro}">Registrarse</a></li>
+						th:href="@{/voter}">Registrarse</a></li>
 					<li class="nav-item active"><a class="nav-link font"
-						th:href="@{/inicio-sesion}">Entrar</a></li>
+						th:href="@{/admin}">Entrar</a></li>
 				</ul>
 			</div>
 		</nav>
