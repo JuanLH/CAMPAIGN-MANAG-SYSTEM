@@ -32,4 +32,10 @@ public class UserService  implements IUserService{
     public void delete(String id) {
         userDao.delete(findById(id));
     }
+
+    @Override
+    public User findByNameAndPassword(String user, String password) {
+        return userDao.findByNameAndPassword(user,password);
+    }
+
 }

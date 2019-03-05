@@ -4,6 +4,8 @@ import com.juanlhiciano.app.models.dao.ILeaderDao;
 import com.juanlhiciano.app.models.entity.Leader;
 import com.juanlhiciano.app.models.entity.Voter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,4 +40,26 @@ public class LeaderService implements ILeaderService {
     public void delete(Long id) {
         leaderDao.delete(findById(id));
     }
+
+	@Override
+	public Leader findByCode(String code) {
+		return leaderDao.findByCode(code);
+	}
+
+	@Override
+	public Leader findByEmail(String email) {
+		return leaderDao.findByEmail(email);
+	}
+
+	@Override
+	public Leader findByPhone(String phone) {
+		return leaderDao.findByPhone(phone);
+	}
+
+	@Override
+	public Page<Leader> findAll(Pageable pageable) {
+		return leaderDao.findAll(pageable);
+	}
+
+	
 }

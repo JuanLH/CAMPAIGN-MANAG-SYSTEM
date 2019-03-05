@@ -1,5 +1,6 @@
 package com.juanlhiciano.app.controller;
 
+import com.juanlhiciano.app.models.entity.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,5 +14,8 @@ public class MainController {
         model.addAttribute("title", "Inicio");
         return "welcome";
     }
+
+
+
 
 }

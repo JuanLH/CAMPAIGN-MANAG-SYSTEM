@@ -17,7 +17,6 @@ public class User {
     String password;
 
     @Email
-    @NotEmpty
     String email;
 
 
