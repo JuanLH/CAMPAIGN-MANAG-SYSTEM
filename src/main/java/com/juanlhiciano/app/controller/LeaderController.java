@@ -51,17 +51,21 @@ public class LeaderController {
     @RequestMapping(value="/save_leader",method = RequestMethod.POST)
     public String saveLeader(@Valid Leader leader, BindingResult result, RedirectAttributes flash,Model model) {
 
-    	if(leaderService.findByCode(leader.getCode()) != null) {
+    	Leader finded;
+    	finded = leaderService.findByCode(leader.getCode());
+    	if(finded != null && finded.getId() != leader.getId()) {
     		FieldError f = new FieldError("code", "code", "El codigo "+leader.getCode()+" esta siendo usado por otro dirigente");
     		result.addError(f);
     	}
     	
-    	if(leaderService.findByEmail(leader.getEmail()) != null) {
+    	finded = leaderService.findByEmail(leader.getEmail());
+    	if( finded != null && finded.getId() != leader.getId()) {
     		FieldError f = new FieldError("email", "email", "El Email "+leader.getEmail()+" esta siendo usado por otro dirigente");
     		result.addError(f);
     	}
     	
-    	if(leaderService.findByPhone(leader.getPhone()) != null) {
+    	finded = leaderService.findByPhone(leader.getPhone());
+    	if(finded!= null && finded.getId() != leader.getId()) {
     		FieldError f = new FieldError("phone", "phone", "El Telefono "+leader.getPhone()+" esta siendo usado por otro dirigente");
     		result.addError(f);
     	}
