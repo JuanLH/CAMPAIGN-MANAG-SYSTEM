@@ -34,12 +34,12 @@ public class Sector implements Serializable {
         this.id = id;
     }
 
-    public String getNombre() {
+    public String getName() {
         return name;
     }
 
-    public void setNombre(String nombre) {
-        this.name = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<Voter> getVotantes() {

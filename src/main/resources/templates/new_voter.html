@@ -1,13 +1,62 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"/>
-    <title th:text="${titulo}">Title</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-          crossorigin="anonymous">
-</head>
-<body>
 
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<div class="col-sm-5 center-div">
+
+		<div class="card text-white bg-dark mb-3 content text-center ">
+			<div class="card-header font">Unete</div>
+			<div class="card-body">
+				<form th:action="@{/voter/save_voter}" th:object="${voter}"
+					method="post">
+
+					<input type="hidden" th:field="*{id}"> 
+					<input type="hidden" th:field="*{leader}">
+					<div class="form-group ">
+						<label for="inputUserName">Nombre</label> <input type="text"
+							class="form-control upper" id="upper-name" th:field="*{name}"
+							placeholder="Nombre completo"> <small
+							class="form-text text-danger"
+							th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
+					</div>
+					<div class="form-group ">
+						<label for="inputUserName">Telefono</label> <input type="text"
+							class="form-control upper" th:field="*{phone}"
+							placeholder="8295555555"> <small
+							class="form-text text-danger"
+							th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></small>
+					</div>
+					<div class="form-group ">
+						<label for="inputPassword4">Correo Electronico</label> <input
+							type="text" class="form-control upper" id="upper-email"
+							th:field="*{email}" placeholder="Correo"> <small
+							class="form-text text-danger"
+							th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+					</div>
+					<div class="form-group  ">
+						<label class="" for="inlineFormCustomSelect">Sector</label> <select
+							th:field="*{sector}" class="form-control"
+							id="inlineFormCustomSelect">
+							<option th:each="sector :${sectors}" th:value="${sector.getId()}"
+								th:text="${sector.getName()}"></option>
+						</select>
+
+					</div>
+
+					<div class="form-group ">
+						<div class="col-md-12 g-recaptcha center"
+							data-sitekey="6LchAJgUAAAAAASUMQf59_v8leDEpKkO3xMS6bEa"></div>
+					</div>
+
+
+					<button type="submit" class="btn btn-primary">Entrar</button>
+
+				</form>
+			</div>
+		</div>
+
+
+	</div>
 </body>
 </html>
