@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -30,7 +32,12 @@ public class UserController {
     @RequestMapping(value = "/home", method = RequestMethod.POST)
     public String login(@Valid User user, Model model, HttpSession session , RedirectAttributes flash){
         User u = userService.findByNameAndPassword(user.getName(),user.getPassword());
-
+        
+        List<User> users = userService.findAll();
+        for(User usu : users) {
+        	System.out.println(usu.getName());
+        }
+        
         if(u != null) {
             session.setAttribute("user_name",u.getName());
             return "logged/logged_home";
