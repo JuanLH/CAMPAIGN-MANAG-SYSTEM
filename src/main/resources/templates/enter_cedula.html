@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<div class="col-sm-5 center-div">
+	
+		<div class="card text-white bg-dark mb-3 content text-center ">
+			<div class="card-header font">Unete</div>
+			<div class="card-body">
+				<form th:action="@{/voter/nuevo_simpatizante}" th:object="${simpatizante}" method="post">
+					<div class="form-group ">
+						<label for="inputUserName">Cedula</label> <input type="text"
+							class="form-control upper" id="upper-name" th:field="*{cedula}"
+							placeholder="Numero de cedula"> <small
+							class="form-text text-danger"
+							th:if="${#fields.hasErrors('cedula')}" th:errors="*{cedula}"></small>
+					</div>
+					
+					<button type="submit" class="btn btn-primary">Entrar</button>
+				</form>
+			</div>
+		</div>	
+	</div>
+</body>
+</html>

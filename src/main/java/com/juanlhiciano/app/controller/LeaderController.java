@@ -1,9 +1,6 @@
 package com.juanlhiciano.app.controller;
 
-
-import com.google.gson.Gson;
 import com.juanlhiciano.app.models.entity.Leader;
-import com.juanlhiciano.app.models.entity.Voter;
 import com.juanlhiciano.app.models.service.ILeaderService;
 import com.juanlhiciano.app.util.paginator.PageRender;
 
@@ -21,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
