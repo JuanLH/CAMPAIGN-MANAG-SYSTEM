@@ -2,6 +2,10 @@ package com.juanlhiciano.app.models.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
 import java.sql.Timestamp;
 
 
@@ -14,6 +18,7 @@ public class Padron2k20 implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Pattern(regexp="(^$|[0-9]{11})")
 	private String cedula;
 
 	private String apellido1;

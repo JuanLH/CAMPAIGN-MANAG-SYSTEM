@@ -6,7 +6,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -16,31 +20,20 @@ public class Voter implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @Pattern(regexp="(^$|[0-9]{11})")
+    @NotEmpty
     String cedula;//***
 
+    @NotEmpty
     String names;
     
+    @NotEmpty
     String LastName1;
-    
-    public String getPensar() {
-		return pensar;
-	}
 
-	public void setPensar(String pensar) {
-		this.pensar = pensar;
-	}
-
-	public String getNecesidad() {
-		return necesidad;
-	}
-
-	public void setNecesidad(String necesidad) {
-		this.necesidad = necesidad;
-	}
-
+    @NotEmpty
 	String LastName2;
     
-    Date dob;
+    Timestamp dob;
     
     String placeOfBirth;
     
@@ -54,20 +47,19 @@ public class Voter implements Serializable {
     
     int idNacionalidad;
     
-    String idMunicipio;
+    int idMunicipio;
     
     String colegioElectoral;
     
     String munCed;
     String seqCed;
     String verCed;
-
     
     
+    @Pattern(regexp="(^$|[0-9]{10})")
     String phone;//***
     
     @Email
-    @NotEmpty
     String email;//***
 
     @Column(name="registration_date")
@@ -125,12 +117,12 @@ public class Voter implements Serializable {
 		LastName2 = lastName2;
 	}
 
-	public Date getDob() {
+	public Timestamp getDob() {
 		return dob;
 	}
 
-	public void setDob(Date dob) {
-		this.dob = dob;
+	public void setDob(Timestamp date) {
+		this.dob = date;
 	}
 
 	public String getPlaceOfBirth() {
@@ -181,11 +173,11 @@ public class Voter implements Serializable {
 		this.idNacionalidad = idNacionalidad;
 	}
 
-	public String getIdMunicipio() {
+	public int getIdMunicipio() {
 		return idMunicipio;
 	}
 
-	public void setIdMunicipio(String idMunicipio) {
+	public void setIdMunicipio(int idMunicipio) {
 		this.idMunicipio = idMunicipio;
 	}
 
@@ -259,6 +251,22 @@ public class Voter implements Serializable {
 
 	public void setSector(Sector sector) {
 		this.sector = sector;
+	}
+	
+	public String getPensar() {
+		return pensar;
+	}
+
+	public void setPensar(String pensar) {
+		this.pensar = pensar;
+	}
+
+	public String getNecesidad() {
+		return necesidad;
+	}
+
+	public void setNecesidad(String necesidad) {
+		this.necesidad = necesidad;
 	}
 
     

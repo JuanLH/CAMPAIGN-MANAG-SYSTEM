@@ -73,6 +73,7 @@ public class LeaderController {
 			for(ObjectError obj: result.getAllErrors()) {
 				System.out.println(obj.getDefaultMessage()+" * "+obj.toString()+" --- "+obj.getObjectName());
 			}
+			
 			return "logged/new_leader";
     	}
     	

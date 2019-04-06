@@ -8,17 +8,17 @@
 		<div class="card text-white bg-dark mb-3 content text-center ">
 			<div class="card-header font">Unete</div>
 			<div class="card-body">
-				<form th:action="@{/voter/save_voter}" th:object="${citizen}"
+				<form th:action="@{/voter/save_voter}" th:object="${voter}"
 					method="post">
-
-					<input type="hidden" th:field="*{cedula}"> 
+					<input type="hidden" th:field="*{cedula}">
 					<input type="hidden" th:field="*{leader}">
+					
 					<div class="form-row ">
 						<div class="form-group col-md-12 ">
 							
 							<label for="inputUserName">Cedula</label> <input type="text"
 								class="form-control upper" id="upper-name" th:field="*{cedula}"
-								placeholder="Nombre completo"> 
+								placeholder="Cedula"  disabled> 
 								<small class="form-text text-danger"
 								th:if="${#fields.hasErrors('cedula')}" th:errors="*{cedula}"></small>
 						</div>
@@ -28,7 +28,7 @@
 						
 							<label for="inputUserName">Nombre</label> <input type="text"
 								class="form-control upper" id="upper-name" th:field="*{names}" 
-								placeholder="Nombre completo"> <small
+								placeholder="Nombre completo" th:readonly="${disable}" > <small
 								class="form-text text-danger"
 								th:if="${#fields.hasErrors('names')}" th:errors="*{names}"></small>
 					</div>	
@@ -36,7 +36,7 @@
 						<div class="form-group col-md-4">
 							<label for="inputUserName">Apellido1</label> <input type="text"
 								class="form-control upper" id="upper-name" th:field="*{LastName1}" 
-								placeholder="Primer Apellido"> <small
+								placeholder="Primer Apellido" th:readonly="${disable}"> <small
 								class="form-text text-danger"
 								th:if="${#fields.hasErrors('LastName1')}" th:errors="*{LastName1}"></small>
 						</div>
@@ -44,7 +44,7 @@
 						<div class="form-group col-md-4">
 							<label for="inputUserName">Apellido2</label> <input type="text"
 								class="form-control upper" id="upper-name" th:field="*{LastName2}" 
-								placeholder="Segundo Apellido"> <small
+								placeholder="Segundo Apellido" th:readonly="${disable}"> <small
 								class="form-text text-danger"
 								th:if="${#fields.hasErrors('LastName2')}" th:errors="*{LastName2}"></small>
 						</div>
