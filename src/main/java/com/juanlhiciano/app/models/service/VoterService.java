@@ -48,4 +48,14 @@ public class VoterService implements IVoterService{
 	public List<Voter> findBySector(Sector sector) {
 		return voterDao.findBySector(sector);
 	}
+
+	@Override
+	public Voter findByPhone(String phone) {
+		return voterDao.findByPhone(phone);
+	}
+
+	@Override
+	public Voter findByEmail(String email) {
+		return voterDao.findByEmail(email);
+	}
 }

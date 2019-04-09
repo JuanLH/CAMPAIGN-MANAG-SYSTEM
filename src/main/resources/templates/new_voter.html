@@ -10,8 +10,22 @@
 			<div class="card-body">
 				<form th:action="@{/voter/save_voter}" th:object="${voter}"
 					method="post">
-					<input type="hidden" th:field="*{cedula}">
-					<input type="hidden" th:field="*{leader}">
+					
+				    <input type="hidden" th:field="*{cedula}">
+				    <input type="hidden" th:field="*{leader}">
+					<!--  <input type="hidden" th:field="*{dob}">
+					<input type="hidden" th:field="*{placeOfBirth}">
+					<input type="hidden" th:field="*{idCategoria}">
+					<input type="hidden" th:field="*{idSexo}">
+					<input type="hidden" th:field="*{estadoCivil}">
+					<input type="hidden" th:field="*{idOcupacion}">
+					<input type="hidden" th:field="*{idNacionalidad}">
+					<input type="hidden" th:field="*{idMunicipio}">
+					<input type="hidden" th:field="*{colegioElectoral}">
+					<input type="hidden" th:field="*{munCed}">
+					<input type="hidden" th:field="*{seqCed}">
+					<input type="hidden" th:field="*{verCed}">-->
+					
 					
 					<div class="form-row ">
 						<div class="form-group col-md-12 ">
@@ -28,7 +42,7 @@
 						
 							<label for="inputUserName">Nombre</label> <input type="text"
 								class="form-control upper" id="upper-name" th:field="*{names}" 
-								placeholder="Nombre completo" th:readonly="${disable}" > <small
+								placeholder="Nombre completo" th:readonly="${disable}" required> <small
 								class="form-text text-danger"
 								th:if="${#fields.hasErrors('names')}" th:errors="*{names}"></small>
 					</div>	
@@ -36,7 +50,7 @@
 						<div class="form-group col-md-4">
 							<label for="inputUserName">Apellido1</label> <input type="text"
 								class="form-control upper" id="upper-name" th:field="*{LastName1}" 
-								placeholder="Primer Apellido" th:readonly="${disable}"> <small
+								placeholder="Primer Apellido" th:readonly="${disable}" required> <small
 								class="form-text text-danger"
 								th:if="${#fields.hasErrors('LastName1')}" th:errors="*{LastName1}"></small>
 						</div>
@@ -44,7 +58,7 @@
 						<div class="form-group col-md-4">
 							<label for="inputUserName">Apellido2</label> <input type="text"
 								class="form-control upper" id="upper-name" th:field="*{LastName2}" 
-								placeholder="Segundo Apellido" th:readonly="${disable}"> <small
+								placeholder="Segundo Apellido" th:readonly="${disable}" required> <small
 								class="form-text text-danger"
 								th:if="${#fields.hasErrors('LastName2')}" th:errors="*{LastName2}"></small>
 						</div>
@@ -52,14 +66,14 @@
 					<div class="form-group ">
 						<label for="inputUserName">Telefono</label> <input type="text"
 							class="form-control upper" th:field="*{phone}"
-							placeholder="8295555555"> <small
+							placeholder="8295555555" required> <small
 							class="form-text text-danger"
 							th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></small>
 					</div>
 					<div class="form-group ">
 						<label for="inputPassword4">Correo Electronico</label> <input
 							type="text" class="form-control upper" id="upper-email"
-							th:field="*{email}" placeholder="Correo"> <small
+							th:field="*{email}" placeholder="Correo" required> <small
 							class="form-text text-danger"
 							th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
 					</div>
@@ -77,12 +91,12 @@
 					
 					 <div class="form-group">
 					  <label for="comment">Tu Pensar/Sugerencia:</label>
-					  <textarea class="form-control" rows="3" id="comment" th:field="*{pensar}"></textarea>
+					  <textarea class="form-control upper" rows="3" id="comment" th:field="*{pensar}"></textarea>
 					</div> 
 					
 					<div class="form-group">
 					  <label for="comment">Tu Necesidad:</label>
-					  <textarea class="form-control" rows="3" id="comment" th:field="*{necesidad}"></textarea>
+					  <textarea class="form-control upper" rows="3" id="comment" th:field="*{necesidad}"></textarea>
 					</div> 
 
 					<div class="form-group ">
@@ -99,5 +113,24 @@
 
 
 	</div>
+	
+	<script>
+	function upper(){
+		
+	}
+		$(function(){
+			$('.upper').keyup(function(){
+				  var start = this.selectionStart;
+				  var end = this.selectionEnd;
+				  this.value = this.value.toUpperCase();
+				  this.setSelectionRange(start, end);
+			});
+			
+		});
+		$("#menu-toggle").click(function(e) {
+			e.preventDefault();
+			$("#wrapper").toggleClass("toggled");
+		});
+	</script>
 </body>
 </html>

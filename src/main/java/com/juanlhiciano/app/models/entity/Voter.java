@@ -4,9 +4,7 @@ package com.juanlhiciano.app.models.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import java.io.Serializable;
@@ -24,13 +22,16 @@ public class Voter implements Serializable {
     @NotEmpty
     String cedula;//***
 
-    @NotEmpty
+    
+    @Pattern(regexp="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$")
     String names;
     
-    @NotEmpty
+    
+    @Pattern(regexp="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$")
     String LastName1;
 
-    @NotEmpty
+    
+    @Pattern(regexp="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$")
 	String LastName2;
     
     Timestamp dob;
@@ -55,11 +56,12 @@ public class Voter implements Serializable {
     String seqCed;
     String verCed;
     
-    
+    @Column(unique = true)
     @Pattern(regexp="(^$|[0-9]{10})")
     String phone;//***
     
-    @Email
+    @Column(unique = true)
+    @Pattern(regexp="^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,63}$")
     String email;//***
 
     @Column(name="registration_date")
@@ -78,6 +80,7 @@ public class Voter implements Serializable {
     
     String necesidad;//***
 
+    @PreUpdate
     @PrePersist
     public void prePersist() {
         registrationDate = new Date();

@@ -14,5 +14,7 @@ public interface IVoterService {
     public void delete(String id);
     public List<Voter> findByLeader(Leader leader);
     public List<Voter> findBySector(Sector sector);
+    public Voter findByPhone(String phone);
+    public Voter findByEmail(String email);
 
 }

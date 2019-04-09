@@ -1,12 +1,17 @@
 package com.juanlhiciano.app.controller;
 
+import com.juanlhiciano.app.models.entity.Leader;
 import com.juanlhiciano.app.models.entity.Padron2k20;
 import com.juanlhiciano.app.models.entity.Sector;
 import com.juanlhiciano.app.models.entity.Voter;
+import com.juanlhiciano.app.models.service.ILeaderService;
 import com.juanlhiciano.app.models.service.IPadron2k20Service;
 import com.juanlhiciano.app.models.service.ISectorService;
 import com.juanlhiciano.app.models.service.IVoterService;
 import com.juanlhiciano.app.util.recaptcha.ReCaptchaResponse;
+
+import java.sql.Date;
+import java.sql.Timestamp;
 
 import javax.validation.Valid;
 
@@ -15,7 +20,10 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,30 +47,65 @@ public class VoterController {
     @Autowired
     private IPadron2k20Service padron2k20Service;
     
+    @Autowired
+    private ILeaderService leaderService;
+    
    
+    
+    //1
+    @RequestMapping(value="/entrada_simpatizante/{leaderCode}")
+    public String newVoter(@PathVariable(value="leaderCode") String leaderCode,Model model){
+    	model.addAttribute("title", "Unete");
+    	model.addAttribute("padron2k20", new Padron2k20());
+    	model.addAttribute("leaderCode", leaderCode);
+        return "enter_cedula";
+    }
     
     //1
     @RequestMapping(value="/entrada_simpatizante")
     public String newVoter(Model model){
     	model.addAttribute("title", "Unete");
-    	model.addAttribute("simpatizante", new Padron2k20());
+    	model.addAttribute("padron2k20", new Padron2k20());
+    	model.addAttribute("leaderCode", null);
         return "enter_cedula";
     }
     
     //2
-    @RequestMapping(value="/nuevo_simpatizante",method = RequestMethod.POST)
-    public String saveVoter(@Valid Padron2k20 cit,BindingResult result,RedirectAttributes flash,Model model) {
-    	if(result.hasErrors()) {
-    		model.addAttribute("title", "Unete");
-        	model.addAttribute("simpatizante", cit);
-    		flash.addFlashAttribute("warning","Cedula incorrecta");
-    		return "redirect:/voter/entrada_simpatizante";
-    		//return "redirect:/voter/entrada_simpatizante";
+    @RequestMapping(value="/nuevo_simpatizante/{leaderCode}",method = RequestMethod.POST)
+    public String saveVoter(@Valid Padron2k20 simpatizante, BindingResult result,RedirectAttributes flash,@PathVariable(value="leaderCode") String leaderCode,Model model) {
+    	Voter finded=null;
+    	try {
+    		finded = voterService.findById(simpatizante.getCedula());
+    	}
+    	catch(Exception e) {
+    		System.out.println("Error al buscar por cedula ->"+e.getMessage());
+    	}
+    	if(finded != null && finded.getCedula() == simpatizante.getCedula()) {
+    		FieldError f = new FieldError("cedula", "cedula", "La cedula "+simpatizante.getCedula()+" esta siendo usada por otro simpatizante");
+    		result.addError(f);
     	}
     	
-    	Padron2k20 padron = padron2k20Service.findByCedula(cit.getCedula());
+    	
+    	if(result.hasErrors()) {
+    		//model.addAttribute("title", "Unete");
+        	model.addAttribute("padron2k20", simpatizante);
+    		//flash.addFlashAttribute("warning","Cedula incorrecta");
+    		return "enter_cedula";
+    		//return (leaderCode != null)?"redirect:/voter/entrada_simpatizante/"+leaderCode:"redirect:/voter/entrada_simpatizante";
+    	}
+    	
+    	Leader leader;
+    	try {
+    		leader = leaderService.findByCode(leaderCode);
+    	}
+    	catch(Exception e) {
+    		System.out.println("No encontro leader");
+    		leader = null;
+    	}
+    	Padron2k20 padron = padron2k20Service.findByCedula(simpatizante.getCedula());
     	Voter citizen = new Voter();
-    	citizen.setCedula(cit.getCedula());
+    	citizen.setCedula(simpatizante.getCedula());
+    	citizen.setLeader(leader);
     	if(padron != null) {
     		System.out.println(padron.getCedula()+"-"+padron.getNombres());
     		citizen.setNames(padron.getNombres());
@@ -82,6 +125,8 @@ public class VoterController {
     		citizen.setVerCed(padron.getVerCed());
     		voterService.save(citizen);
     	}
+    	
+    	
     
     	model.addAttribute("title", "Unete");
     	model.addAttribute("voter", citizen);
@@ -100,12 +145,33 @@ public class VoterController {
     	String necesidad = voter.getNecesidad();
     	String pensar = voter.getPensar();
     	Sector sector = voter.getSector();
-    	voter = voterService.findById(voter.getCedula());
+    	Leader leader = voter.getLeader();
+    	System.out.println(voter.getCedula());
+    	try {
+    		voter = voterService.findById(voter.getCedula());
+    	}
+    	catch(Exception e) {
+    		System.out.println("Exception ->"+e.getMessage());
+    	}
     	voter.setEmail(email);
     	voter.setPhone(phone);
     	voter.setNecesidad(necesidad);
     	voter.setPensar(pensar);
     	voter.setSector(sector);
+    	voter.setLeader(leader);
+    	
+    	Voter finded;
+    	finded = voterService.findByPhone(voter.getPhone());
+    	if(finded != null && finded.getCedula() != voter.getCedula()) {
+    		FieldError f = new FieldError("phone", "phone", "El telefono "+voter.getPhone()+" esta siendo usado por otro simpatizante");
+    		result.addError(f);
+    	}
+    	
+    	finded = voterService.findByEmail(voter.getEmail());
+    	if(finded != null && finded.getCedula() != voter.getCedula()) {
+    		FieldError f = new FieldError("email", "email", "El correo "+voter.getEmail()+" esta siendo usado por otro simpatizante");
+    		result.addError(f);
+    	}
     	
     	String url = "https://www.google.com/recaptcha/api/siteverify";
 		String params = "?secret=6LchAJgUAAAAALGyxvElCD8XE7R_KKccuYv7tZ3-&response="+captchaResponse;
@@ -124,16 +190,20 @@ public class VoterController {
     		return "new_voter";
     	}
 		
+		
 		ReCaptchaResponse reCaptchaResponse = restTemplate.exchange(url+params, HttpMethod.POST, null, ReCaptchaResponse.class).getBody();
+		
+		
 		if(reCaptchaResponse.isSuccess()) {
 			
 			voterService.save(voter);
-			return "redirect:/voter/entrada_simpatizante";
+			return (voter.getLeader()!=null)?"redirect:/voter/entrada_simpatizante/"+voter.getLeader().getCode()+"":"redirect:/voter/entrada_simpatizante";
+			//return "redirect:/voter/entrada_simpatizante";
 		} else {
 			//message = "Please verify captcha";
 			//return "redirect:/";
 			voterService.save(voter);
-			return "redirect:/voter/entrada_simpatizante";
+			return (voter.getLeader()!=null)?"redirect:/voter/entrada_simpatizante/"+voter.getLeader().getCode()+"":"redirect:/voter/entrada_simpatizante";
 		}
     }
     

@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface IVoterDao extends CrudRepository<Voter,String> {
     public List<Voter> findByLeader(Leader leader);
     public List<Voter> findBySector(Sector sector);
+    public Voter findByPhone(String phone);
+    public Voter findByEmail(String email);
 }
