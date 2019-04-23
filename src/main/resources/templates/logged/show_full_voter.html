@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head"></head>
+<body>
+<div class="d-flex" id="wrapper">
+
+		<div th:replace="layout/layout_logged :: sidebar"></div>
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+
+			<nav th:replace="layout/layout_logged :: navbar"></nav>
+	
+	<div class="col-sm-6 center-div">
+
+		<div class="card text-white bg-dark mb-3 content text-center ">
+			<div class="card-header font">Unete</div>
+			<div class="card-body">
+				<form th:object="${voter}"
+					method="post">
+					
+					<div class="form-row ">
+						<div class="form-group col-md-12 ">
+							
+							<label for="inputUserName">Cedula</label> <input type="text"
+								class="form-control upper" id="upper-name" th:field="*{cedula}"
+								placeholder="Cedula"  disabled> 
+								<small class="form-text text-danger"
+								th:if="${#fields.hasErrors('cedula')}" th:errors="*{cedula}"></small>
+						</div>
+					</div>
+					<div class="form-row ">
+					<div class="form-group col-md-4">
+						
+							<label for="inputUserName">Nombre</label> <input type="text"
+								class="form-control upper" id="upper-name" th:field="*{names}" 
+								placeholder="Nombre completo" th:readonly="${disable}" required> <small
+								class="form-text text-danger"
+								th:if="${#fields.hasErrors('names')}" th:errors="*{names}"></small>
+					</div>	
+						
+						<div class="form-group col-md-4">
+							<label for="inputUserName">Apellido1</label> <input type="text"
+								class="form-control upper" id="upper-name" th:field="*{LastName1}" 
+								placeholder="Primer Apellido" th:readonly="${disable}" required> <small
+								class="form-text text-danger"
+								th:if="${#fields.hasErrors('LastName1')}" th:errors="*{LastName1}"></small>
+						</div>
+						
+						<div class="form-group col-md-4">
+							<label for="inputUserName">Apellido2</label> <input type="text"
+								class="form-control upper" id="upper-name" th:field="*{LastName2}" 
+								placeholder="Segundo Apellido" th:readonly="${disable}" required> <small
+								class="form-text text-danger"
+								th:if="${#fields.hasErrors('LastName2')}" th:errors="*{LastName2}"></small>
+						</div>
+					</div>
+					<div class="form-group ">
+						<label for="inputUserName">Telefono</label> <input type="text"
+							class="form-control upper" th:field="*{phone}"
+							placeholder="8295555555" required> <small
+							class="form-text text-danger"
+							th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></small>
+					</div>
+					<div class="form-group ">
+						<label for="inputPassword4">Correo Electronico</label> <input
+							type="text" class="form-control upper" id="upper-email"
+							th:field="*{email}" placeholder="Correo" required> <small
+							class="form-text text-danger"
+							th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+					</div>
+					<div class="form-group  ">
+						<label class="" for="inlineFormCustomSelect">Provincia</label> <select
+							th:field="*{sector}" class="form-control"
+							id="inlineFormCustomSelect">
+							<option th:each="sector :${sectors}" 
+								th:value="${sector.getId()}"
+								th:text="${sector.getName()}">
+							</option>
+						</select>
+
+					</div>
+					
+					 <div class="form-group">
+					  <label for="comment">Tu Pensar/Sugerencia:</label>
+					  <textarea class="form-control upper" rows="3" id="comment" th:field="*{pensar}"></textarea>
+					</div> 
+					
+					<div class="form-group">
+					  <label for="comment">Tu Necesidad:</label>
+					  <textarea class="form-control upper" rows="3" id="comment" th:field="*{necesidad}"></textarea>
+					</div> 
+					
+					<div class="form-row ">
+					<div class="form-group col-md-4">
+						
+							<label for="inputUserName">Estado Civil</label> <input type="text"
+								class="form-control upper" id="upper-name" th:field="*{estadoCivil}" 
+								placeholder="Nombre completo"  required> <small
+								class="form-text text-danger"
+								th:if="${#fields.hasErrors('estadoCivil')}" th:errors="*{estadoCivil}"></small>
+					</div>	
+						
+						<div class="form-group col-md-4">
+							<label for="inputUserName">Lugar de nacimiento</label> <input type="text"
+								class="form-control upper" id="upper-name" th:field="*{placeOfBirth}" 
+								placeholder="Primer Apellido" th:readonly="${disable}" required> <small
+								class="form-text text-danger"
+								th:if="${#fields.hasErrors('placeOfBirth')}" th:errors="*{placeOfBirth}"></small>
+						</div>
+						
+						<div class="form-group col-md-4">
+							<label for="inputUserName">Fecha Nacimiento</label> <input type="text"
+								class="form-control upper" id="upper-name" th:field="*{dob}" 
+								placeholder="" th:readonly="${disable}" required> <small
+								class="form-text text-danger"
+								th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}"></small>
+						</div>
+					</div>
+					
+					<div class="form-row ">
+					<div class="form-group col-md-4">
+						
+							<label for="inputUserName">Sexo</label> <input type="text"
+								class="form-control upper" id="upper-name" th:field="*{idSexo}" 
+								placeholder="Nombre completo"  required> <small
+								class="form-text text-danger"
+								th:if="${#fields.hasErrors('idSexo')}" th:errors="*{idSexo}"></small>
+					</div>	
+						
+						<div class="form-group col-md-4">
+							<label for="inputUserName">Dirigente:</label> <input type="text"
+								class="form-control upper" id="upper-name" th:value="${leader}" 
+								placeholder="Primer Apellido" th:readonly="${disable}" required> <small
+								class="form-text text-danger"
+								th:if="${#fields.hasErrors('placeOfBirth')}" th:errors="*{placeOfBirth}"></small>
+						</div>
+						
+						<div class="form-group col-md-4">
+							<label for="inputUserName">Fecha de Registro</label> <input type="text"
+								class="form-control upper" id="upper-name" th:field="*{registrationDate}" 
+								placeholder=""  required> <small
+								class="form-text text-danger"
+								th:if="${#fields.hasErrors('registrationDate')}" th:errors="*{registrationDate}"></small>
+						</div>
+					</div>
+					
+					
+
+
+				</form>
+			</div>
+		</div>
+
+
+	</div>
+	</div>
+	
+	<script>
+	function upper(){
+		
+	}
+		$(function(){
+			$('.upper').keyup(function(){
+				  var start = this.selectionStart;
+				  var end = this.selectionEnd;
+				  this.value = this.value.toUpperCase();
+				  this.setSelectionRange(start, end);
+			});
+			
+		});
+		$("#menu-toggle").click(function(e) {
+			e.preventDefault();
+			$("#wrapper").toggleClass("toggled");
+		});
+	</script>
+</body>
+</html>

@@ -6,6 +6,8 @@ import com.juanlhiciano.app.models.entity.Leader;
 import com.juanlhiciano.app.models.entity.Sector;
 import com.juanlhiciano.app.models.entity.Voter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -57,5 +59,20 @@ public class VoterService implements IVoterService{
 	@Override
 	public Voter findByEmail(String email) {
 		return voterDao.findByEmail(email);
+	}
+
+	@Override
+	public Page<Voter> findAll(Pageable pageable) {
+		return voterDao.findAll(pageable);
+	}
+
+	@Override
+	public Page<Voter> findByLeader(Leader leader, Pageable page) {
+		return voterDao.findByLeader(leader, page);
+	}
+
+	@Override
+	public Page<Voter> findBySector(Sector sector, Pageable page) {
+		return voterDao.findBySector(sector, page);
 	}
 }

@@ -8,6 +8,7 @@ import com.juanlhiciano.app.models.service.ILeaderService;
 import com.juanlhiciano.app.models.service.IPadron2k20Service;
 import com.juanlhiciano.app.models.service.ISectorService;
 import com.juanlhiciano.app.models.service.IVoterService;
+import com.juanlhiciano.app.util.paginator.PageRender;
 import com.juanlhiciano.app.util.recaptcha.ReCaptchaResponse;
 
 import java.sql.Date;
@@ -16,6 +17,9 @@ import java.sql.Timestamp;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -207,5 +211,81 @@ public class VoterController {
 		}
     }
     
+    
+    @RequestMapping(value="/listar-simpatizantes")
+    public String listarSimpatizantes(@RequestParam(name="page", defaultValue = "0") int page, Model model) {
+    	
+    	Pageable pageRequest = PageRequest.of(page, 5);
+    	Page<Voter> voters = voterService.findAll(pageRequest);
+    	
+    	PageRender<Voter> pageRender = new PageRender<>("/voter/listar-simpatizantes", voters);
+    	model.addAttribute("title","Listar Simpatizante");
+    	model.addAttribute("voters",voters);
+    	model.addAttribute("page", pageRender);
+    	return "logged/show_voters";
+    }
+    
+    
+    @RequestMapping(value="/{cedula}")
+    public String seeVoter(@PathVariable(value="cedula")String cedula,Model model ,RedirectAttributes flash) {
+    	Voter voter=null;
+    	String message="";
+    	
+    	voter = voterService.findById(cedula);
+    	if(voter == null) {
+    		flash.addFlashAttribute("error", "La cedula no existe en la base de datos");
+			return "redirect:/voter/listar-simpatizantes";
+    	}
+    	
+    	model.addAttribute("title", "Ver simpatizante");
+    	model.addAttribute("sectors", sectorService.findAll());
+    	model.addAttribute("voter", voter);
+    	model.addAttribute("leader", (voter.getLeader() != null)?voter.getLeader().toString():"NO TIENE");
+    	return "logged/show_full_voter";
+    }
+    //Ver votantes por lugar form inicio
+    @RequestMapping(value="/listarxlugar")
+    public String byPlace(@RequestParam(name="page", defaultValue = "0") int page, Model model) {
+    	Pageable pageRequest = PageRequest.of(page, 5);
+    	Page<Voter> voters = voterService.findAll(pageRequest);
+    	PageRender<Voter> pageRender = new PageRender<>("/voter/listarxlugar", voters);
+    	
+    	model.addAttribute("title", "Buscar simpatizantes");
+    	model.addAttribute("sector", new Sector());
+    	model.addAttribute("voters",voters);
+    	model.addAttribute("sectors", sectorService.findAll());
+    	model.addAttribute("page", pageRender);
+    	return "logged/show_votersByPlace";
+    }
+    
+    //Ver votantes por lugar form button
+    @RequestMapping(value="/listarxlugar",method = RequestMethod.POST)
+    public String byPlace(@RequestParam(name="page", defaultValue = "0") int page,@RequestParam int id, Model model) {
+    	Pageable pageRequest = PageRequest.of(page, 5);
+    	Page<Voter> voters = voterService.findBySector(sectorService.findById(id),pageRequest);
+    	PageRender<Voter> pageRender = new PageRender<>("/voter/listarxlugar", voters);
+    	
+    	model.addAttribute("title", "Buscar simpatizantes");
+    	model.addAttribute("sector", new Sector());
+    	model.addAttribute("voters",voters);
+    	model.addAttribute("sectors", sectorService.findAll());
+    	model.addAttribute("page", pageRender);
+    	return "redirect:/voter/listarxlugar/"+id;
+    }
+    
+  //Ver votantes por lugar form button group place
+    @RequestMapping(value="/listarxlugar/{sectorId}",method = RequestMethod.GET)
+    public String byPlace2(@RequestParam(name="page", defaultValue = "0") int page, @PathVariable(value="sectorId")int sectorId, Model model) {
+    	Pageable pageRequest = PageRequest.of(page, 5);
+    	Page<Voter> voters = voterService.findBySector(sectorService.findById(sectorId),pageRequest);
+    	PageRender<Voter> pageRender = new PageRender<>("/voter/listarxlugar/"+sectorId, voters);
+    	
+    	model.addAttribute("title", "Buscar simpatizantes");
+    	model.addAttribute("sector", new Sector());
+    	model.addAttribute("voters",voters);
+    	model.addAttribute("sectors", sectorService.findAll());
+    	model.addAttribute("page", pageRender);
+    	return "logged/show_votersByPlace";
+    }
     
 }

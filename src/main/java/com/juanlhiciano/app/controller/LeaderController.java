@@ -93,7 +93,7 @@ public class LeaderController {
 			leader = leaderService.findById(id);
 			if(leader == null) {
 				flash.addFlashAttribute("error", "El ID del dirigente no existe en la BBDD!");
-				return "redirect:/listar-dirigentesr";
+				return "redirect:/listar-dirigentes";
 			}
 		} else {
 			flash.addFlashAttribute("error", "El ID del dirigente no puede ser cero!");

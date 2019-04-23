@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<div class="d-flex" id="wrapper">
+
+		<div th:replace="layout/layout_logged :: sidebar"></div>
+
+		<!-- Page Content -->
+		<div id="page-content-wrapper">
+
+			<nav th:replace="layout/layout_logged :: navbar"></nav>
+
+			<div class="container-fluid">
+				<div class="alert alert-success" th:if="${success != null}"
+					th:text="${success}"></div>
+				<div class="alert alert-danger" th:if="${error != null}"
+					th:text="${error}"></div>
+				<div class="alert alert-warning" th:if="${warning != null}"
+					th:text="${warning}"></div>
+				<div class="alert alert-info" th:if="${info != null}"
+					th:text="${info}"></div>
+
+				<div class="container py-4">
+
+					<div class="card bg-light">
+						<div class="card-header" th:text="${title}"></div>
+						<div class="card-body">
+
+							<!--  <h4 class="card-title">
+								<a th:href="@{/leader/nuevo-dirigente}" class="btn btn-primary btn-xs">Nuevo
+									Dirigente</a>-->
+							</h4>
+							<table class="table table-striped table-bordered">
+								<thead class="thead-inverse">
+									<tr>
+										<th>cedula</th>
+										<th>nombre</th>
+										<th>apellido1</th>
+										<th>apellido2</th>
+										<th>telefono</th>
+										<th>correo</th>
+										<th>registro</th>
+										<th>ver mas</th>
+										
+										
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="voter: ${voters}">
+										<td th:text="${voter.cedula}"></td>
+										<td th:text="${voter.names}"></td>
+										<td th:text="${voter.LastName1}"></td>
+										<td th:text="${voter.LastName2}"></td>
+										<td th:text="${voter.phone}"></td>
+										<td th:text="${voter.email}"></td>
+										<td th:text="${voter.registrationDate}"></td>
+										<td><a class="btn btn-primary btn-xs"
+											th:href="@{/voter/} + ${voter.cedula}" th:text="'ver mas'"></a></td>
+									</tr>
+								</tbody>
+
+							</table>
+							<nav th:replace="layout/paginator_nav :: paginator"></nav>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+		<!-- /#page-content-wrapper -->
+
+	</div>
+
+	<footer th:replace="layout/layout :: footer"></footer>
+	<!-- Menu Toggle Script -->
+	<script>
+	
+	function upper(){
+		
+	}
+		$(function(){
+			$('.upper').keyup(function(){
+				  var start = this.selectionStart;
+				  var end = this.selectionEnd;
+				  this.value = this.value.toUpperCase();
+				  this.setSelectionRange(start, end);
+			});
+			
+		});
+		$("#menu-toggle").click(function(e) {
+			e.preventDefault();
+			$("#wrapper").toggleClass("toggled");
+		});
+	</script>
+</body>
+</html>

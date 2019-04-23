@@ -69,5 +69,25 @@
 	</div>
 
 	<footer th:replace="layout/layout :: footer"></footer>
+	<!-- Menu Toggle Script -->
+	<script>
+	
+	function upper(){
+		
+	}
+		$(function(){
+			$('.upper').keyup(function(){
+				  var start = this.selectionStart;
+				  var end = this.selectionEnd;
+				  this.value = this.value.toUpperCase();
+				  this.setSelectionRange(start, end);
+			});
+			
+		});
+		$("#menu-toggle").click(function(e) {
+			e.preventDefault();
+			$("#wrapper").toggleClass("toggled");
+		});
+	</script>
 </body>
 </html>

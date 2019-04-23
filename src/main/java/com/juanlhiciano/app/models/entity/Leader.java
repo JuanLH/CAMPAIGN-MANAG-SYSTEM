@@ -111,4 +111,9 @@ public class Leader implements Serializable  {
     public void addVoter(Voter votante){
         voters.add(votante);
     }
+    
+    public String toString() {
+		return name+" - "+code;
+    	
+    }
 }
