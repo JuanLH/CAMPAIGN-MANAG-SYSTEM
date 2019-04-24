@@ -280,12 +280,61 @@ public class VoterController {
     	Page<Voter> voters = voterService.findBySector(sectorService.findById(sectorId),pageRequest);
     	PageRender<Voter> pageRender = new PageRender<>("/voter/listarxlugar/"+sectorId, voters);
     	
+    	Sector sector = new Sector();
+    	sector.setId(sectorId);
+    	model.addAttribute("title", "Buscar simpatizantes");
+    	model.addAttribute("sector", sector);
+    	model.addAttribute("voters",voters);
+    	model.addAttribute("sectors", sectorService.findAll());
+    	model.addAttribute("page", pageRender);
+    	return "logged/show_votersByPlace";
+    }
+    
+  //Ver votantes por leader form inicio
+    @RequestMapping(value="/listarxdirigente")
+    public String byLeader(@RequestParam(name="page", defaultValue = "0") int page, Model model) {
+    	Pageable pageRequest = PageRequest.of(page, 5);
+    	Page<Voter> voters = voterService.findAll(pageRequest);
+    	PageRender<Voter> pageRender = new PageRender<>("/voter/listarxdirigente", voters);
+    	
+    	model.addAttribute("title", "Buscar simpatizantes");
+    	model.addAttribute("leader", new Leader());
+    	model.addAttribute("voters",voters);
+    	model.addAttribute("leaders", leaderService.findAll());
+    	model.addAttribute("page", pageRender);
+    	return "logged/show_votersByLeader";
+    }
+    
+    //Ver votantes por leader form button
+    @RequestMapping(value="/listarxdirigente",method = RequestMethod.POST)
+    public String byLeader(@RequestParam(name="page", defaultValue = "0") int page,@RequestParam int id, Model model) {
+    	Pageable pageRequest = PageRequest.of(page, 5);
+    	Page<Voter> voters = voterService.findBySector(sectorService.findById(id),pageRequest);
+    	PageRender<Voter> pageRender = new PageRender<>("/voter/listarxdirigente", voters);
+    	
     	model.addAttribute("title", "Buscar simpatizantes");
     	model.addAttribute("sector", new Sector());
     	model.addAttribute("voters",voters);
     	model.addAttribute("sectors", sectorService.findAll());
     	model.addAttribute("page", pageRender);
-    	return "logged/show_votersByPlace";
+    	return "redirect:/voter/listarxdirigente/"+id;
+    }
+    
+  //Ver votantes por leader form button group place
+    @RequestMapping(value="/listarxdirigente/{leaderId}",method = RequestMethod.GET)
+    public String byLeader2(@RequestParam(name="page", defaultValue = "0") int page, @PathVariable(value="leaderId")long leaderId, Model model) {
+    	Pageable pageRequest = PageRequest.of(page, 5);
+    	Page<Voter> voters = voterService.findByLeader(leaderService.findById(leaderId),pageRequest);
+    	PageRender<Voter> pageRender = new PageRender<>("/voter/listarxdirigente/"+leaderId, voters);
+    	
+    	Leader leader = new Leader();
+    	leader.setId(leaderId);
+    	model.addAttribute("title", "Buscar simpatizantes");
+    	model.addAttribute("leader", leader);
+    	model.addAttribute("voters",voters);
+    	model.addAttribute("leaders", leaderService.findAll());
+    	model.addAttribute("page", pageRender);
+    	return "logged/show_votersByLeader";
     }
     
 }
