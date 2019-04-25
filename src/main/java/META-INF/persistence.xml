@@ -6,5 +6,6 @@
 		<class>com.juanlhiciano.app.models.entity.User</class>
 		<class>com.juanlhiciano.app.models.entity.Voter</class>
 		<class>com.juanlhiciano.app.models.entity.Padron2k20</class>
+		<class>com.juanlhiciano.app.models.entity.UserType</class>
 	</persistence-unit>
 </persistence>

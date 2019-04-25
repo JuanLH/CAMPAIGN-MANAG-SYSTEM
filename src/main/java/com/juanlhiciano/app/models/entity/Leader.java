@@ -41,7 +41,10 @@ public class Leader implements Serializable  {
     @Pattern(regexp="([A-Z]{2}[0-9]{3})")
     String code;
 
-    @OneToMany(mappedBy = "leader",  fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
+    @NotEmpty
+    String password;
+    
+	@OneToMany(mappedBy = "leader",  fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties(value={"leader", "hibernateLazyInitializer", "handler"}, allowSetters=true)
     private  List<Voter> voters;
 
@@ -50,8 +53,6 @@ public class Leader implements Serializable  {
         voters = new ArrayList<>();
     }
 
-    
-    
     public String getEmail() {
 		return email;
 	}
@@ -116,4 +117,12 @@ public class Leader implements Serializable  {
 		return name+" - "+code;
     	
     }
+    
+    public String getPassword() {
+		return password;
+	}
+    
+	public void setPassword(String password) {
+		this.password = password;
+	}
 }

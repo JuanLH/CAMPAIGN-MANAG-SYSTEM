@@ -39,6 +39,7 @@
 										<th>telefono</th>
 										<th>email</th>
 										<th>codigo</th>
+										<th>password</th>
 										<th>editar</th>
 										
 									</tr>
@@ -50,6 +51,7 @@
 										<td th:text="${leader.phone}"></td>
 										<td th:text="${leader.email}"></td>
 										<td th:text="${leader.code}"></td>
+										<td th:text="${leader.password}"></td>
 										<td><a class="btn btn-primary btn-xs"
 											th:href="@{/leader/} + ${leader.id}" th:text="'editar'"></a></td>
 									</tr>
