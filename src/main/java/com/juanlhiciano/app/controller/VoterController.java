@@ -247,7 +247,7 @@ public class VoterController {
     @RequestMapping(value="/listarxlugar")
     public String byPlace(@RequestParam(name="page", defaultValue = "0") int page, Model model) {
     	Pageable pageRequest = PageRequest.of(page, 5);
-    	Page<Voter> voters = voterService.findAll(pageRequest);
+    	Page<Voter> voters = voterService.findBySector(sectorService.findById(1),pageRequest);
     	PageRender<Voter> pageRender = new PageRender<>("/voter/listarxlugar", voters);
     	
     	model.addAttribute("title", "Buscar simpatizantes");
@@ -294,7 +294,7 @@ public class VoterController {
     @RequestMapping(value="/listarxdirigente")
     public String byLeader(@RequestParam(name="page", defaultValue = "0") int page, Model model) {
     	Pageable pageRequest = PageRequest.of(page, 5);
-    	Page<Voter> voters = voterService.findAll(pageRequest);
+    	Page<Voter> voters = voterService.findByLeader(leaderService.findById(1L),pageRequest);
     	PageRender<Voter> pageRender = new PageRender<>("/voter/listarxdirigente", voters);
     	
     	model.addAttribute("title", "Buscar simpatizantes");
@@ -322,7 +322,7 @@ public class VoterController {
     
   //Ver votantes por leader form button group place
     @RequestMapping(value="/listarxdirigente/{leaderId}",method = RequestMethod.GET)
-    public String byLeader2(@RequestParam(name="page", defaultValue = "0") int page, @PathVariable(value="leaderId")long leaderId, Model model) {
+    public String byLeader2(@RequestParam(name="page", defaultValue = "0") int page, @PathVariable(value="leaderId") long leaderId, Model model) {
     	Pageable pageRequest = PageRequest.of(page, 5);
     	Page<Voter> voters = voterService.findByLeader(leaderService.findById(leaderId),pageRequest);
     	PageRender<Voter> pageRender = new PageRender<>("/voter/listarxdirigente/"+leaderId, voters);
