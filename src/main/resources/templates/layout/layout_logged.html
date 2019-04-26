@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-	<!-- Sidebar -->
+	<!-- Sidebar Admin -->
     <div th:fragment="sidebar" class="bg-light border-right" id="sidebar-wrapper">
         <div class="sidebar-heading">Menu Principal </div>
         <div class="list-group list-group-flush">
@@ -10,6 +10,16 @@
             <a href="/leader/listar-dirigentes" class="list-group-item list-group-item-action bg-light">Ver Dirigentes</a>
             <a href="/voter/listarxlugar" class="list-group-item list-group-item-action bg-light">Ver Votantes por Sector</a>
             <a href="/voter/listarxdirigente" class="list-group-item list-group-item-action bg-light">Ver Votantes por Dirigentes</a>
+
+        </div>
+    </div>
+    
+    <div th:fragment="sidebar_leader" class="bg-light border-right" id="sidebar-wrapper">
+        <div class="sidebar-heading">Menu Principal</div>
+        <div class="list-group list-group-flush">
+            <a href="/leader/listar-simpatizantes" class="list-group-item list-group-item-action bg-light">Inicio</a>
+            <a href="/leader/listarxlugar" class="list-group-item list-group-item-action bg-light">Ver Votantes por Sector</a>
+            <a href="/leader/listarxdirigente" class="list-group-item list-group-item-action bg-light">Ver Votantes por Dirigentes</a>
 
         </div>
     </div>

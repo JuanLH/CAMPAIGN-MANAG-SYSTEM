@@ -61,5 +61,10 @@ public class LeaderService implements ILeaderService {
 		return leaderDao.findAll(pageable);
 	}
 
+	@Override
+	public Leader findByCodeAndPassword(String code, String password) {
+		return leaderDao.findByCodeAndPassword(code, password);
+	}
+
 	
 }
