@@ -75,4 +75,9 @@ public class VoterService implements IVoterService{
 	public Page<Voter> findBySector(Sector sector, Pageable page) {
 		return voterDao.findBySector(sector, page);
 	}
+
+	@Override
+	public Page<Voter> findByLeaderAndSector(Leader leader, Sector sector, Pageable page) {
+		return voterDao.findByLeaderAndSector(leader, sector, page);
+	}
 }

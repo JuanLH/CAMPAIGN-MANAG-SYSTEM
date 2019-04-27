@@ -1,7 +1,11 @@
 package com.juanlhiciano.app.controller;
 
 import com.juanlhiciano.app.models.entity.Leader;
+import com.juanlhiciano.app.models.entity.Sector;
+import com.juanlhiciano.app.models.entity.Voter;
 import com.juanlhiciano.app.models.service.ILeaderService;
+import com.juanlhiciano.app.models.service.ISectorService;
+import com.juanlhiciano.app.models.service.IVoterService;
 import com.juanlhiciano.app.util.paginator.PageRender;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
@@ -30,6 +35,12 @@ public class LeaderController {
 
     @Autowired
     ILeaderService leaderService;
+    
+    @Autowired
+    IVoterService voterService;
+    
+    @Autowired
+    ISectorService sectorService;
 
     @RequestMapping(value="test")
     public @ResponseBody List<Leader> getAll(){
@@ -116,6 +127,65 @@ public class LeaderController {
     	model.addAttribute("leaders",leaders);
     	model.addAttribute("page", pageRender);
     	return "logged/show_leaders";
+    }
+    
+    @RequestMapping(value="/listar-simpatizantes")
+    public String listarSimpatizantes(@RequestParam(name="page", defaultValue = "0") int page,HttpSession session, Model model) {
+    	
+    	Pageable pageRequest = PageRequest.of(page, 5);
+    	Page<Voter> voters = voterService.findByLeader(leaderService.findByCode(session.getAttribute("user_code").toString()), pageRequest);
+    	PageRender<Voter> pageRender = new PageRender<>("/voter/listar-simpatizantes", voters);
+    	model.addAttribute("title","Listar Simpatizante");
+    	model.addAttribute("voters",voters);
+    	model.addAttribute("page", pageRender);
+    	return "leader_logged/show_voters";
+    }
+    
+  //Ver votantes por lugar form inicio
+    @RequestMapping(value="/listarxlugar")
+    public String byPlace(@RequestParam(name="page", defaultValue = "0") int page,HttpSession session, Model model) {
+    	Pageable pageRequest = PageRequest.of(page, 5);
+    	Page<Voter> voters = voterService.findByLeaderAndSector(leaderService.findByCode(session.getAttribute("user_code").toString()), sectorService.findById(1), pageRequest);
+    	PageRender<Voter> pageRender = new PageRender<>("/leader/listarxlugar", voters);
+    	
+    	model.addAttribute("title", "Buscar simpatizantes");
+    	model.addAttribute("sector", new Sector());
+    	model.addAttribute("voters",voters);
+    	model.addAttribute("sectors", sectorService.findAll());
+    	model.addAttribute("page", pageRender);
+    	return "leader_logged/show_votersByPlace";
+    }
+    
+    //Ver votantes por lugar form button
+    @RequestMapping(value="/listarxlugar",method = RequestMethod.POST)
+    public String byPlace(@RequestParam(name="page", defaultValue = "0") int page,HttpSession session,@RequestParam int id, Model model) {
+    	Pageable pageRequest = PageRequest.of(page, 5);
+    	Page<Voter> voters = voterService.findByLeaderAndSector(leaderService.findByCode(session.getAttribute("user_code").toString()), sectorService.findById(1), pageRequest);
+    	PageRender<Voter> pageRender = new PageRender<>("/leader/listarxlugar", voters);
+    	
+    	model.addAttribute("title", "Buscar simpatizantes");
+    	model.addAttribute("sector", new Sector());
+    	model.addAttribute("voters",voters);
+    	model.addAttribute("sectors", sectorService.findAll());
+    	model.addAttribute("page", pageRender);
+    	return "redirect:/leader/listarxlugar/"+id;
+    }
+    
+  //Ver votantes por lugar form button group place
+    @RequestMapping(value="/listarxlugar/{sectorId}",method = RequestMethod.GET)
+    public String byPlace2(@RequestParam(name="page", defaultValue = "0") int page,HttpSession session, @PathVariable(value="sectorId")int sectorId, Model model) {
+    	Pageable pageRequest = PageRequest.of(page, 5);
+    	Page<Voter> voters = voterService.findByLeaderAndSector(leaderService.findByCode(session.getAttribute("user_code").toString()), sectorService.findById(1), pageRequest);
+    	PageRender<Voter> pageRender = new PageRender<>("/leader/listarxlugar/"+sectorId, voters);
+    	
+    	Sector sector = new Sector();
+    	sector.setId(sectorId);
+    	model.addAttribute("title", "Buscar simpatizantes");
+    	model.addAttribute("sector", sector);
+    	model.addAttribute("voters",voters);
+    	model.addAttribute("sectors", sectorService.findAll());
+    	model.addAttribute("page", pageRender);
+    	return "leader_logged/show_votersByPlace";
     }
     
 }
