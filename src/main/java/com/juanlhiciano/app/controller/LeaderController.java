@@ -138,6 +138,7 @@ public class LeaderController {
     	model.addAttribute("title","Listar Simpatizante");
     	model.addAttribute("voters",voters);
     	model.addAttribute("page", pageRender);
+    	model.addAttribute("total_consult", voters.getTotalElements());
     	return "leader_logged/show_voters";
     }
     
@@ -153,6 +154,7 @@ public class LeaderController {
     	model.addAttribute("voters",voters);
     	model.addAttribute("sectors", sectorService.findAll());
     	model.addAttribute("page", pageRender);
+    	model.addAttribute("total_consult", voters.getTotalElements());
     	return "leader_logged/show_votersByPlace";
     }
     
@@ -168,6 +170,7 @@ public class LeaderController {
     	model.addAttribute("voters",voters);
     	model.addAttribute("sectors", sectorService.findAll());
     	model.addAttribute("page", pageRender);
+    	model.addAttribute("total_consult", voters.getTotalElements());
     	return "redirect:/leader/listarxlugar/"+id;
     }
     
@@ -175,16 +178,17 @@ public class LeaderController {
     @RequestMapping(value="/listarxlugar/{sectorId}",method = RequestMethod.GET)
     public String byPlace2(@RequestParam(name="page", defaultValue = "0") int page,HttpSession session, @PathVariable(value="sectorId")int sectorId, Model model) {
     	Pageable pageRequest = PageRequest.of(page, 5);
-    	Page<Voter> voters = voterService.findByLeaderAndSector(leaderService.findByCode(session.getAttribute("user_code").toString()), sectorService.findById(1), pageRequest);
+    	Page<Voter> voters = voterService.findByLeaderAndSector(leaderService.findByCode(session.getAttribute("user_code").toString()), sectorService.findById(sectorId), pageRequest);
     	PageRender<Voter> pageRender = new PageRender<>("/leader/listarxlugar/"+sectorId, voters);
     	
     	Sector sector = new Sector();
     	sector.setId(sectorId);
     	model.addAttribute("title", "Buscar simpatizantes");
     	model.addAttribute("sector", sector);
-    	model.addAttribute("voters",voters);
+    	model.addAttribute("voters", voters);
     	model.addAttribute("sectors", sectorService.findAll());
     	model.addAttribute("page", pageRender);
+    	model.addAttribute("total_consult", voters.getTotalElements());
     	return "leader_logged/show_votersByPlace";
     }
     

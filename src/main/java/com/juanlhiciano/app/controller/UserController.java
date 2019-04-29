@@ -56,11 +56,11 @@ public class UserController {
         	session.setAttribute("user_type",user.getUserType().getId());
         	if(user.getUserType().getId()==1) {
 	            session.setAttribute("user_name",u.getName());
-	            return "logged/logged_home";
+	            return "redirect:/voter/listar-simpatizantes";//logged/logged_home";
         	}
         	else {
         		session.setAttribute("user_code",l.getCode());
-        		return "leader_logged/logged_home";
+        		return "redirect:/leader/listar-simpatizantes";//"leader_logged/logged_home";
         	}
         }
         else{

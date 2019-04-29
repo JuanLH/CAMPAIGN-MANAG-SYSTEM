@@ -39,7 +39,10 @@
 					  <button type="submit" class="btn btn-primary mb-2">Buscar</button>
 					</form>
 					<div class="card bg-light">
-						<div class="card-header" th:text="${title}"></div>
+						<div class="card-header">
+							<h4><b><p th:text="${title}"></p></b></h4>
+							<p><b>Total en consulta = </b> <em th:text="${total_consult}"></em></p>  
+						</div>
 						<div class="card-body">
 
 							<!--  <h4 class="card-title">

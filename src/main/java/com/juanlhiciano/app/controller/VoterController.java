@@ -201,8 +201,7 @@ public class VoterController {
 		if(reCaptchaResponse.isSuccess()) {
 			
 			voterService.save(voter);
-			return (voter.getLeader()!=null)?"redirect:/voter/entrada_simpatizante/"+voter.getLeader().getCode()+"":"redirect:/voter/entrada_simpatizante";
-			//return "redirect:/voter/entrada_simpatizante";
+			return "redirect:/";
 		} else {
 			//message = "Please verify captcha";
 			//return "redirect:/";
@@ -222,6 +221,7 @@ public class VoterController {
     	model.addAttribute("title","Listar Simpatizante");
     	model.addAttribute("voters",voters);
     	model.addAttribute("page", pageRender);
+    	model.addAttribute("total_consult", voters.getTotalElements());
     	return "logged/show_voters";
     }
     
@@ -243,6 +243,24 @@ public class VoterController {
     	model.addAttribute("leader", (voter.getLeader() != null)?voter.getLeader().toString():"NO TIENE");
     	return "logged/show_full_voter";
     }
+    
+    @RequestMapping(value="/4leader/{cedula}")
+    public String seeVoter4Leader(@PathVariable(value="cedula")String cedula,Model model ,RedirectAttributes flash) {
+    	Voter voter=null;
+    	String message="";
+    	
+    	voter = voterService.findById(cedula);
+    	if(voter == null) {
+    		flash.addFlashAttribute("error", "La cedula no existe en la base de datos");
+			return "redirect:/voter/listar-simpatizantes";
+    	}
+    	
+    	model.addAttribute("title", "Ver simpatizante");
+    	model.addAttribute("sectors", sectorService.findAll());
+    	model.addAttribute("voter", voter);
+    	model.addAttribute("leader", (voter.getLeader() != null)?voter.getLeader().toString():"NO TIENE");
+    	return "leader_logged/show_full_voter";
+    }
     //Ver votantes por lugar form inicio
     @RequestMapping(value="/listarxlugar")
     public String byPlace(@RequestParam(name="page", defaultValue = "0") int page, Model model) {
@@ -255,6 +273,7 @@ public class VoterController {
     	model.addAttribute("voters",voters);
     	model.addAttribute("sectors", sectorService.findAll());
     	model.addAttribute("page", pageRender);
+    	model.addAttribute("total_consult", voters.getTotalElements());
     	return "logged/show_votersByPlace";
     }
     
@@ -265,11 +284,12 @@ public class VoterController {
     	Page<Voter> voters = voterService.findBySector(sectorService.findById(id),pageRequest);
     	PageRender<Voter> pageRender = new PageRender<>("/voter/listarxlugar", voters);
     	
-    	model.addAttribute("title", "Buscar simpatizantes");
+    	/*model.addAttribute("title", "Buscar simpatizantes");
     	model.addAttribute("sector", new Sector());
     	model.addAttribute("voters",voters);
     	model.addAttribute("sectors", sectorService.findAll());
     	model.addAttribute("page", pageRender);
+    	model.addAttribute("total_consult", voters.getTotalElements());*/
     	return "redirect:/voter/listarxlugar/"+id;
     }
     
@@ -287,6 +307,7 @@ public class VoterController {
     	model.addAttribute("voters",voters);
     	model.addAttribute("sectors", sectorService.findAll());
     	model.addAttribute("page", pageRender);
+    	model.addAttribute("total_consult", voters.getTotalElements());
     	return "logged/show_votersByPlace";
     }
     
@@ -302,6 +323,7 @@ public class VoterController {
     	model.addAttribute("voters",voters);
     	model.addAttribute("leaders", leaderService.findAll());
     	model.addAttribute("page", pageRender);
+    	model.addAttribute("total_consult", voters.getTotalElements());
     	return "logged/show_votersByLeader";
     }
     
@@ -317,6 +339,7 @@ public class VoterController {
     	model.addAttribute("voters",voters);
     	model.addAttribute("sectors", sectorService.findAll());
     	model.addAttribute("page", pageRender);
+    	model.addAttribute("total_consult", voters.getTotalElements());
     	return "redirect:/voter/listarxdirigente/"+id;
     }
     
@@ -334,6 +357,7 @@ public class VoterController {
     	model.addAttribute("voters",voters);
     	model.addAttribute("leaders", leaderService.findAll());
     	model.addAttribute("page", pageRender);
+    	model.addAttribute("total_consult", voters.getTotalElements());
     	return "logged/show_votersByLeader";
     }
     
