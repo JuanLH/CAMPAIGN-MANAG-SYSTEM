@@ -23,5 +23,6 @@ public interface IVoterService {
     public Page<Voter> findByLeader(Leader leader,Pageable page);
     public Page<Voter> findByLeaderAndSector(Leader leader,Sector sector,Pageable page);
     public Page<Voter> findBySector(Sector sector,Pageable page);
+    public Page<Voter> findByCheck(Boolean check,Pageable page);
 
 }

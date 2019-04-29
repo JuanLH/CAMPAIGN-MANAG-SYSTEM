@@ -43,8 +43,8 @@
 										<th>apellido2</th>
 										<th>telefono</th>
 										<th>correo</th>
-										<th>registro</th>
 										<th>ver mas</th>
+										<th>pendiente</th>
 										
 										
 									</tr>
@@ -57,9 +57,16 @@
 										<td th:text="${voter.LastName2}"></td>
 										<td th:text="${voter.phone}"></td>
 										<td th:text="${voter.email}"></td>
-										<td th:text="${voter.registrationDate}"></td>
 										<td><a class="btn btn-primary btn-xs"
 											th:href="@{/voter/} + ${voter.cedula}" th:text="'ver mas'"></a></td>
+										<td>
+											
+												<a th:if="${not voter.check}" class="btn btn-primary btn-xs button_check" 
+												th:id="${voter.cedula}"  th:text="'Marcar'"></a>
+												<a th:if="${voter.check}" class="btn btn-warning btn-xs button_uncheck"
+												th:id="${voter.cedula}" th:text="'Quitar'"></a>
+											
+										</td>	
 									</tr>
 								</tbody>
 
@@ -96,6 +103,58 @@
 			e.preventDefault();
 			$("#wrapper").toggleClass("toggled");
 		});
+		
+		$(".button_check").click(function(){
+	        var dato = {
+	                'cedula' : $(this).attr('id')
+	          };
+	        //alert("Cambiar a amarillo");
+			  $.ajax({
+				  url: "/voter/mark", 
+				  type: "POST",
+		          data: dato,
+		          context:this,
+				  success: function(data){
+					  $(this).removeClass("btn-primary");
+					  $(this).removeClass("button_check");
+					  $(this).addClass("btn-warning");
+					  $(this).addClass("button_uncheck");
+					  $(this).html("Quitar");
+			  	  },
+			  	  error: function() {
+		             alert("error");
+		          }
+			  });
+			});
+		
+		$(".button_uncheck").click(function(){
+	        var dato = {
+	                'cedula' : $(this).attr('id')
+	          };
+	          //alert("Cambiar a azul");
+			  $.ajax({
+				  url: "/voter/unmark", 
+				  type: "POST",
+		          data: dato,
+		          context:this,
+				  success: function(data){
+					  $(this).removeClass("btn-warning");
+					  $(this).removeClass("button_uncheck");
+					  $(this).addClass("btn-primary");
+					  $(this).addClass("button_check");
+					  $(this).html("Marcar");
+			  	  },
+			  	  error: function() {
+		             alert("error");
+		          }
+		          
+			  });
+			});
+			
+			
+			
+			
+			
 	</script>
 </body>
 </html>

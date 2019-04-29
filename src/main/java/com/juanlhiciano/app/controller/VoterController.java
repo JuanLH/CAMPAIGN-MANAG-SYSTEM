@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -361,4 +362,81 @@ public class VoterController {
     	return "logged/show_votersByLeader";
     }
     
+    @RequestMapping(value="/listarxindependiente")
+    public String listarSimpatizantesInd(@RequestParam(name="page", defaultValue = "0") int page, Model model) {
+    	
+    	Pageable pageRequest = PageRequest.of(page, 5);
+    	Page<Voter> voters = voterService.findByLeader(null,pageRequest);
+    	
+    	PageRender<Voter> pageRender = new PageRender<>("/voter/listarxindependiente", voters);
+    	model.addAttribute("title","Listar Simpatizante");
+    	model.addAttribute("voters",voters);
+    	model.addAttribute("page", pageRender);
+    	model.addAttribute("total_consult", voters.getTotalElements());
+    	return "logged/show_voters";
+    }
+    
+    @RequestMapping(value="/listarxmarca")
+    public String listarSimpatizantesCheck(@RequestParam(name="page", defaultValue = "0") int page, Model model) {
+    	
+    	Pageable pageRequest = PageRequest.of(page, 5);
+    	Page<Voter> voters = voterService.findByCheck(true,pageRequest);
+    	
+    	PageRender<Voter> pageRender = new PageRender<>("/voter/listarxmarca", voters);
+    	model.addAttribute("title","Listar Simpatizante");
+    	model.addAttribute("voters",voters);
+    	model.addAttribute("page", pageRender);
+    	model.addAttribute("total_consult", voters.getTotalElements());
+    	return "logged/show_voters";
+    }
+    
+    @PostMapping(value="/mark")
+    @ResponseBody
+    public String mark_voter(@RequestParam String cedula,Model model ,RedirectAttributes flash) {
+    	Voter voter=null;
+    	String message="";
+    	voter = voterService.findById(cedula);
+    	
+    	if(voter == null) {
+    		flash.addFlashAttribute("error", "La cedula no existe en la base de datos");
+			return "redirect:/voter/listar-simpatizantes";
+    	}
+    	
+    	voter.setCheck(true);
+    	try {
+    		voterService.save(voter);
+    		message = "Se agrego correctamente";
+    	}
+    	catch(Exception e) {
+    		message = "No se pudo agregar";
+    	}
+    	
+    	
+    	return message;
+    }
+    
+    @PostMapping(value="/unmark")
+    @ResponseBody
+    public String unmark_voter(@RequestParam String cedula,Model model ,RedirectAttributes flash) {
+    	Voter voter=null;
+    	String message="";
+    	voter = voterService.findById(cedula);
+    	
+    	if(voter == null) {
+    		flash.addFlashAttribute("error", "La cedula no existe en la base de datos");
+			return "redirect:/voter/listar-simpatizantes";
+    	}
+    	
+    	voter.setCheck(false);
+    	try {
+    		voterService.save(voter);
+    		message = "Se quito correctamente";
+    	}
+    	catch(Exception e) {
+    		message = "No se pudo quitar";
+    	}
+    	
+    	
+    	return message;
+    }
 }

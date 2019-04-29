@@ -4,7 +4,7 @@
 <body>
 	<div class="d-flex" id="wrapper">
 
-		<div th:replace="layout/layout_logged :: sidebar"></div>
+		<div th:replace="layout/layout_logged :: sidebar_leader"></div>
 
 		<!-- Page Content -->
 		<div id="page-content-wrapper">
@@ -22,22 +22,7 @@
 					th:text="${info}"></div>
 
 				<div class="container py-4">
-					<form class="form-inline" th:action="@{/voter/listarxdirigente}" th:object="${leader}" method="post">
-					  <div class="form-group mb-2">
-					    <label for="staticEmail2" class="">Dirigente:</label>
-					    <!--<input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="email@example.com">-->
-					  </div>
-					  <div class="form-group mx-sm-3 mb-2">
-					    <label for="inputPassword2" class="sr-only">Password</label>
-					    <select th:field="*{id}" class="form-control" id="inlineFormCustomSelect">
-							<option th:each="leader :${leaders}" 
-								th:value="${leader.getId()}"
-								th:text="${leader.getName()}">
-							</option>
-						</select>
-					  </div>
-					  <button type="submit" class="btn btn-primary mb-2">Buscar</button>
-					</form>
+
 					<div class="card bg-light">
 						<div class="card-header">
 							<h4><b><p th:text="${title}"></p></b></h4>
@@ -73,7 +58,7 @@
 										<td th:text="${voter.phone}"></td>
 										<td th:text="${voter.email}"></td>
 										<td><a class="btn btn-primary btn-xs"
-											th:href="@{/voter/} + ${voter.cedula}" th:text="'ver mas'"></a></td>
+											th:href="@{/voter/4leader/} + ${voter.cedula}" th:text="'ver mas'"></a></td>
 										<td>
 											
 												<a th:if="${not voter.check}" class="btn btn-primary btn-xs button_check" 

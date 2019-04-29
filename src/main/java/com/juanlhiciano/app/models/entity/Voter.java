@@ -79,6 +79,9 @@ public class Voter implements Serializable {
     String pensar;//***
     
     String necesidad;//***
+    
+    @Column(name="check_mark")
+    Boolean check;
 
     @PreUpdate
     @PrePersist
@@ -271,6 +274,20 @@ public class Voter implements Serializable {
 	public void setNecesidad(String necesidad) {
 		this.necesidad = necesidad;
 	}
+
+	public Boolean getCheck() {
+		return check;
+	}
+
+	public void setCheck(Boolean check) {
+		this.check = check;
+	}
+	
+	
+
+
+	
+	
 
     
     
