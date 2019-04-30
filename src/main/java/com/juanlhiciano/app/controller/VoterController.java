@@ -14,6 +14,7 @@ import com.juanlhiciano.app.util.recaptcha.ReCaptchaResponse;
 import java.sql.Date;
 import java.sql.Timestamp;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -213,7 +214,13 @@ public class VoterController {
     
     
     @RequestMapping(value="/listar-simpatizantes")
-    public String listarSimpatizantes(@RequestParam(name="page", defaultValue = "0") int page, Model model) {
+    public String listarSimpatizantes(@RequestParam(name="page", defaultValue = "0") int page,HttpSession session, Model model) {
+    	
+    	if(session.getAttribute("user_name")==null)
+    		return "redirect:/";
+    	else if(!session.getAttribute("user_name").equals("ADMIN")) 
+    		return "redirect:/";
+    	
     	
     	Pageable pageRequest = PageRequest.of(page, 5);
     	Page<Voter> voters = voterService.findAll(pageRequest);
@@ -228,7 +235,12 @@ public class VoterController {
     
     
     @RequestMapping(value="/{cedula}")
-    public String seeVoter(@PathVariable(value="cedula")String cedula,Model model ,RedirectAttributes flash) {
+    public String seeVoter(@PathVariable(value="cedula")String cedula,Model model ,HttpSession session,RedirectAttributes flash) {
+    	if(session.getAttribute("user_name")==null)
+    		return "redirect:/";
+    	else if(!session.getAttribute("user_name").equals("ADMIN")) 
+    		return "redirect:/";
+    	
     	Voter voter=null;
     	String message="";
     	
@@ -264,7 +276,12 @@ public class VoterController {
     }
     //Ver votantes por lugar form inicio
     @RequestMapping(value="/listarxlugar")
-    public String byPlace(@RequestParam(name="page", defaultValue = "0") int page, Model model) {
+    public String byPlace(@RequestParam(name="page", defaultValue = "0") int page,HttpSession session, Model model) {
+    	if(session.getAttribute("user_name")==null)
+    		return "redirect:/";
+    	else if(!session.getAttribute("user_name").equals("ADMIN")) 
+    		return "redirect:/";
+    	
     	Pageable pageRequest = PageRequest.of(page, 5);
     	Page<Voter> voters = voterService.findBySector(sectorService.findById(1),pageRequest);
     	PageRender<Voter> pageRender = new PageRender<>("/voter/listarxlugar", voters);
@@ -280,7 +297,12 @@ public class VoterController {
     
     //Ver votantes por lugar form button
     @RequestMapping(value="/listarxlugar",method = RequestMethod.POST)
-    public String byPlace(@RequestParam(name="page", defaultValue = "0") int page,@RequestParam int id, Model model) {
+    public String byPlace(@RequestParam(name="page", defaultValue = "0") int page,@RequestParam int id,HttpSession session, Model model) {
+    	if(session.getAttribute("user_name")==null)
+    		return "redirect:/";
+    	else if(!session.getAttribute("user_name").equals("ADMIN")) 
+    		return "redirect:/";
+    	
     	Pageable pageRequest = PageRequest.of(page, 5);
     	Page<Voter> voters = voterService.findBySector(sectorService.findById(id),pageRequest);
     	PageRender<Voter> pageRender = new PageRender<>("/voter/listarxlugar", voters);
@@ -296,7 +318,12 @@ public class VoterController {
     
   //Ver votantes por lugar form button group place
     @RequestMapping(value="/listarxlugar/{sectorId}",method = RequestMethod.GET)
-    public String byPlace2(@RequestParam(name="page", defaultValue = "0") int page, @PathVariable(value="sectorId")int sectorId, Model model) {
+    public String byPlace2(@RequestParam(name="page", defaultValue = "0") int page, @PathVariable(value="sectorId")int sectorId, HttpSession session, Model model) {
+    	if(session.getAttribute("user_name")==null)
+    		return "redirect:/";
+    	else if(!session.getAttribute("user_name").equals("ADMIN")) 
+    		return "redirect:/";
+    	
     	Pageable pageRequest = PageRequest.of(page, 5);
     	Page<Voter> voters = voterService.findBySector(sectorService.findById(sectorId),pageRequest);
     	PageRender<Voter> pageRender = new PageRender<>("/voter/listarxlugar/"+sectorId, voters);
@@ -314,7 +341,13 @@ public class VoterController {
     
   //Ver votantes por leader form inicio
     @RequestMapping(value="/listarxdirigente")
-    public String byLeader(@RequestParam(name="page", defaultValue = "0") int page, Model model) {
+    public String byLeader(@RequestParam(name="page", defaultValue = "0") int page,HttpSession session, Model model) {
+    	if(session.getAttribute("user_name")==null)
+    		return "redirect:/";
+    	else if(!session.getAttribute("user_name").equals("ADMIN")) 
+    		return "redirect:/";
+    	
+    	
     	Pageable pageRequest = PageRequest.of(page, 5);
     	Page<Voter> voters = voterService.findByLeader(leaderService.findById(1L),pageRequest);
     	PageRender<Voter> pageRender = new PageRender<>("/voter/listarxdirigente", voters);
@@ -330,7 +363,12 @@ public class VoterController {
     
     //Ver votantes por leader form button
     @RequestMapping(value="/listarxdirigente",method = RequestMethod.POST)
-    public String byLeader(@RequestParam(name="page", defaultValue = "0") int page,@RequestParam int id, Model model) {
+    public String byLeader(@RequestParam(name="page", defaultValue = "0") int page,@RequestParam int id,HttpSession session, Model model) {
+    	if(session.getAttribute("user_name")==null)
+    		return "redirect:/";
+    	else if(!session.getAttribute("user_name").equals("ADMIN")) 
+    		return "redirect:/";
+    	
     	Pageable pageRequest = PageRequest.of(page, 5);
     	Page<Voter> voters = voterService.findBySector(sectorService.findById(id),pageRequest);
     	PageRender<Voter> pageRender = new PageRender<>("/voter/listarxdirigente", voters);
@@ -346,7 +384,12 @@ public class VoterController {
     
   //Ver votantes por leader form button group place
     @RequestMapping(value="/listarxdirigente/{leaderId}",method = RequestMethod.GET)
-    public String byLeader2(@RequestParam(name="page", defaultValue = "0") int page, @PathVariable(value="leaderId") long leaderId, Model model) {
+    public String byLeader2(@RequestParam(name="page", defaultValue = "0") int page, @PathVariable(value="leaderId") long leaderId,HttpSession session, Model model) {
+    	if(session.getAttribute("user_name")==null)
+    		return "redirect:/";
+    	else if(!session.getAttribute("user_name").equals("ADMIN")) 
+    		return "redirect:/";
+    	
     	Pageable pageRequest = PageRequest.of(page, 5);
     	Page<Voter> voters = voterService.findByLeader(leaderService.findById(leaderId),pageRequest);
     	PageRender<Voter> pageRender = new PageRender<>("/voter/listarxdirigente/"+leaderId, voters);
@@ -363,8 +406,11 @@ public class VoterController {
     }
     
     @RequestMapping(value="/listarxindependiente")
-    public String listarSimpatizantesInd(@RequestParam(name="page", defaultValue = "0") int page, Model model) {
-    	
+    public String listarSimpatizantesInd(@RequestParam(name="page", defaultValue = "0") int page,HttpSession session, Model model) {
+    	if(session.getAttribute("user_name")==null)
+    		return "redirect:/";
+    	else if(!session.getAttribute("user_name").equals("ADMIN")) 
+    		return "redirect:/";
     	Pageable pageRequest = PageRequest.of(page, 5);
     	Page<Voter> voters = voterService.findByLeader(null,pageRequest);
     	
