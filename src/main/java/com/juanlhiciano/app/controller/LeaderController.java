@@ -59,6 +59,13 @@ public class LeaderController {
     public String saveLeader(@Valid Leader leader, BindingResult result, RedirectAttributes flash,Model model) {
 
     	Leader finded;
+    	
+    	finded = leaderService.findByCedula(leader.getCedula());
+    	if(finded != null && finded.getId() != leader.getId()) {
+    		FieldError f = new FieldError("cedula", "cedula", "La cedula "+leader.getCedula()+" esta siendo usado por otro dirigente");
+    		result.addError(f);
+    	}
+    	
     	finded = leaderService.findByCode(leader.getCode());
     	if(finded != null && finded.getId() != leader.getId()) {
     		FieldError f = new FieldError("code", "code", "El codigo "+leader.getCode()+" esta siendo usado por otro dirigente");

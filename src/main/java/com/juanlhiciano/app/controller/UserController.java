@@ -1,7 +1,7 @@
 package com.juanlhiciano.app.controller;
 
 import com.juanlhiciano.app.models.entity.Leader;
-import com.juanlhiciano.app.models.entity.User;
+import com.juanlhiciano.app.models.entity.UserT;
 import com.juanlhiciano.app.models.service.ILeaderService;
 import com.juanlhiciano.app.models.service.IUserService;
 import com.juanlhiciano.app.models.service.IUserTypeService;
@@ -32,29 +32,29 @@ public class UserController {
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String loginAdmin(Model model) {
-        User user = new User();
+        UserT userT = new UserT();
         model.addAttribute("title", "Entrar");
         model.addAttribute("userTypes", userTypeService.findAll());
         
-        model.addAttribute("user",user);
+        model.addAttribute("user",userT);
         return "admin_login";
     }
 
     //Login
     @RequestMapping(value = "/home", method = RequestMethod.POST)
-    public String login(@Valid User user, Model model, HttpSession session , RedirectAttributes flash){
-        User u=null;
+    public String login(@Valid UserT userT, Model model, HttpSession session , RedirectAttributes flash){
+        UserT u=null;
         Leader l=null;
-    	if(user.getUserType().getId()==1)
-    		u = userService.findByNameAndPassword(user.getName(),user.getPassword());
+    	if(userT.getUserType().getId()==1)
+    		u = userService.findByNameAndPassword(userT.getName(),userT.getPassword());
         else
-        	l = leaderService.findByCodeAndPassword(user.getName(),user.getPassword());
+        	l = leaderService.findByCodeAndPassword(userT.getName(),userT.getPassword());
     	
         
         //Finded
         if(u != null || l != null) {
-        	session.setAttribute("user_type",user.getUserType().getId());
-        	if(user.getUserType().getId()==1) {
+        	session.setAttribute("user_type",userT.getUserType().getId());
+        	if(userT.getUserType().getId()==1) {
 	            session.setAttribute("user_name",u.getName());
 	            return "redirect:/voter/listar-simpatizantes";//logged/logged_home";
         	}

@@ -27,6 +27,12 @@ public class Leader implements Serializable  {
     @Pattern(regexp="(^$|[0-9]{10})")
     String phone;
     
+    @Column(unique=true)
+    @NotEmpty
+    @Pattern(regexp="(^$|[0-9]{11})")
+    String cedula;
+    
+    
     @Email
     @Column(unique = true)
     @NotEmpty
@@ -125,4 +131,14 @@ public class Leader implements Serializable  {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public String getCedula() {
+		return cedula;
+	}
+
+	public void setCedula(String cedula) {
+		this.cedula = cedula;
+	}
+	
+	
 }

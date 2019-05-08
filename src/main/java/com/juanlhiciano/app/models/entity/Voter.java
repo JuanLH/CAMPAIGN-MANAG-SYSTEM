@@ -66,7 +66,7 @@ public class Voter implements Serializable {
 
     @Column(name="registration_date")
     @Temporal(TemporalType.DATE)
-    Date registrationDate;//***
+    Date registration;//***
 
     @ManyToOne
     @JsonIgnoreProperties(value={"voters", "hibernateLazyInitializer", "handler"}, allowSetters=true)
@@ -86,7 +86,8 @@ public class Voter implements Serializable {
     @PreUpdate
     @PrePersist
     public void prePersist() {
-        registrationDate = new Date();
+        registration = new Date();
+        check = false;
     }
     
     //---------------------------------------------------
@@ -236,11 +237,11 @@ public class Voter implements Serializable {
 	}
 
 	public Date getRegistrationDate() {
-		return registrationDate;
+		return registration;
 	}
 
 	public void setRegistrationDate(Date registrationDate) {
-		this.registrationDate = registrationDate;
+		this.registration = registrationDate;
 	}
 
 	public Leader getLeader() {

@@ -32,6 +32,12 @@
 							<form th:action="@{/leader/save_leader}" th:object="${leader}" method="post">
 								
 								<input type="hidden"  th:field="*{id}">
+								
+								<div class="form-group ">
+									<label for="inputUserName">Cedula:</label> 
+									<input type="text" class="form-control upper" id="upper-name" th:field="*{cedula}" placeholder="Doc. Identidad">
+									<small class="form-text text-danger" th:if="${#fields.hasErrors('cedula')}" th:errors="*{cedula}" ></small>
+								</div>
 								<div class="form-group ">
 									<label for="inputUserName">Nombre</label> 
 									<input type="text" class="form-control upper" id="upper-name" th:field="*{name}"   placeholder="Nombre completo">

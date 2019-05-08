@@ -3,7 +3,7 @@
 	<persistence-unit name="app">
 		<class>com.juanlhiciano.app.models.entity.Leader</class>
 		<class>com.juanlhiciano.app.models.entity.Sector</class>
-		<class>com.juanlhiciano.app.models.entity.User</class>
+		<class>com.juanlhiciano.app.models.entity.UserT</class>
 		<class>com.juanlhiciano.app.models.entity.Voter</class>
 		<class>com.juanlhiciano.app.models.entity.Padron2k20</class>
 		<class>com.juanlhiciano.app.models.entity.UserType</class>

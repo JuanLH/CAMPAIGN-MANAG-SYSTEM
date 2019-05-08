@@ -1,7 +1,7 @@
 package com.juanlhiciano.app.models.service;
 
 import com.juanlhiciano.app.models.dao.IUserDao;
-import com.juanlhiciano.app.models.entity.User;
+import com.juanlhiciano.app.models.entity.UserT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,17 +14,17 @@ public class UserService  implements IUserService{
     IUserDao userDao;
 
     @Override
-    public List<User> findAll() {
-        return (List<User>) userDao.findAll();
+    public List<UserT> findAll() {
+        return (List<UserT>) userDao.findAll();
     }
 
     @Override
-    public void save(User user) {
-        userDao.save(user);
+    public void save(UserT userT) {
+        userDao.save(userT);
     }
 
     @Override
-    public User findById(String id) {
+    public UserT findById(String id) {
         return userDao.findById(id).get();
     }
 
@@ -34,7 +34,7 @@ public class UserService  implements IUserService{
     }
 
     @Override
-    public User findByNameAndPassword(String user, String password) {
+    public UserT findByNameAndPassword(String user, String password) {
         return userDao.findByNameAndPassword(user,password);
     }
 
