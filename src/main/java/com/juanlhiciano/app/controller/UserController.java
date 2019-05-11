@@ -1,7 +1,7 @@
 package com.juanlhiciano.app.controller;
 
 import com.juanlhiciano.app.models.entity.Leader;
-import com.juanlhiciano.app.models.entity.UserT;
+import com.juanlhiciano.app.models.entity.User;
 import com.juanlhiciano.app.models.service.ILeaderService;
 import com.juanlhiciano.app.models.service.IUserService;
 import com.juanlhiciano.app.models.service.IUserTypeService;
@@ -32,34 +32,37 @@ public class UserController {
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String loginAdmin(Model model) {
-        UserT userT = new UserT();
+        User user = new User();
         model.addAttribute("title", "Entrar");
         model.addAttribute("userTypes", userTypeService.findAll());
         
-        model.addAttribute("user",userT);
+        model.addAttribute("user",user);
         return "admin_login";
     }
 
     //Login
     @RequestMapping(value = "/home", method = RequestMethod.POST)
-    public String login(@Valid UserT userT, Model model, HttpSession session , RedirectAttributes flash){
-        UserT u=null;
+    public String login( User user, Model model, HttpSession session , RedirectAttributes flash){
+        User u=null;
         Leader l=null;
-    	if(userT.getUserType().getId()==1)
-    		u = userService.findByNameAndPassword(userT.getName(),userT.getPassword());
-        else
-        	l = leaderService.findByCodeAndPassword(userT.getName(),userT.getPassword());
+    	
+		u = userService.findByCedulaAndPassword(user.getCedula(),user.getPassword());
+    	l = leaderService.findByCedulaAndPassword(user.getCedula(),user.getPassword());
     	
         
         //Finded
         if(u != null || l != null) {
-        	session.setAttribute("user_type",userT.getUserType().getId());
-        	if(userT.getUserType().getId()==1) {
+        	
+        	if(u != null) {
+        		session.setAttribute("user_type",1);
 	            session.setAttribute("user_name",u.getName());
+	            session.setAttribute("user_cedula",u.getCedula());//para validar acceso
 	            return "redirect:/voter/listar-simpatizantes";//logged/logged_home";
         	}
         	else {
+        		session.setAttribute("user_type",0);
         		session.setAttribute("user_code",l.getCode());
+        		session.setAttribute("user_cedula",l.getCedula());//para validar acceso
         		return "redirect:/leader/listar-simpatizantes";//"leader_logged/logged_home";
         	}
         }

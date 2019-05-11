@@ -15,7 +15,7 @@ import java.sql.Timestamp;
  * 
  */
 @Entity
-public class Padron2k20 implements Serializable {
+public class Padron2020 implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -64,7 +64,7 @@ public class Padron2k20 implements Serializable {
 	@Column(name="ver_ced")
 	private String verCed;
 
-	public Padron2k20() {
+	public Padron2020() {
 	}
 
 	public String getCedula() {

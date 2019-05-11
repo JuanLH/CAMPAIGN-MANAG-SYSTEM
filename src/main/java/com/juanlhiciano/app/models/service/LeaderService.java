@@ -71,5 +71,10 @@ public class LeaderService implements ILeaderService {
 		return leaderDao.findByCedula(cedula);
 	}
 
+	@Override
+	public Leader findByCedulaAndPassword(String cedula, String password) {
+		return leaderDao.findByCedulaAndPassword(cedula, password);
+	}
+
 	
 }

@@ -23,7 +23,7 @@ public class Voter implements Serializable {
     String cedula;//***
 
     
-    @Pattern(regexp="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$")
+    @Pattern(regexp="^[a-zA-Z ]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$")
     String names;
     
     
@@ -76,8 +76,10 @@ public class Voter implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     Sector sector;//***
     
+    @Pattern(regexp="^[0-9a-zA-Z ]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$")
     String pensar;//***
     
+    @Pattern(regexp="^[0-9a-zA-Z ]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$")
     String necesidad;//***
     
     @Column(name="check_mark")

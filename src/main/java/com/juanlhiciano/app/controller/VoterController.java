@@ -1,19 +1,5 @@
 package com.juanlhiciano.app.controller;
 
-import com.juanlhiciano.app.models.entity.Leader;
-import com.juanlhiciano.app.models.entity.Padron2k20;
-import com.juanlhiciano.app.models.entity.Sector;
-import com.juanlhiciano.app.models.entity.Voter;
-import com.juanlhiciano.app.models.service.ILeaderService;
-import com.juanlhiciano.app.models.service.IPadron2k20Service;
-import com.juanlhiciano.app.models.service.ISectorService;
-import com.juanlhiciano.app.models.service.IVoterService;
-import com.juanlhiciano.app.util.paginator.PageRender;
-import com.juanlhiciano.app.util.recaptcha.ReCaptchaResponse;
-
-import java.sql.Date;
-import java.sql.Timestamp;
-
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -27,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +21,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.juanlhiciano.app.models.entity.Leader;
+import com.juanlhiciano.app.models.entity.Padron2020;
+import com.juanlhiciano.app.models.entity.Sector;
+import com.juanlhiciano.app.models.entity.Voter;
+import com.juanlhiciano.app.models.service.ILeaderService;
+import com.juanlhiciano.app.models.service.IPadron2k20Service;
+import com.juanlhiciano.app.models.service.ISectorService;
+import com.juanlhiciano.app.models.service.IUserService;
+import com.juanlhiciano.app.models.service.IVoterService;
+import com.juanlhiciano.app.util.paginator.PageRender;
+import com.juanlhiciano.app.util.recaptcha.ReCaptchaResponse;
 
 @Controller
 @RequestMapping("/voter")
@@ -56,13 +53,16 @@ public class VoterController {
     @Autowired
     private ILeaderService leaderService;
     
+    @Autowired
+    private IUserService userService;
+    
    
     
     //1
     @RequestMapping(value="/entrada_simpatizante/{leaderCode}")
     public String newVoter(@PathVariable(value="leaderCode") String leaderCode,Model model){
     	model.addAttribute("title", "Unete");
-    	model.addAttribute("padron2k20", new Padron2k20());
+    	model.addAttribute("simpatizante", new Padron2020());
     	model.addAttribute("leaderCode", leaderCode);
         return "enter_cedula";
     }
@@ -71,14 +71,14 @@ public class VoterController {
     @RequestMapping(value="/entrada_simpatizante")
     public String newVoter(Model model){
     	model.addAttribute("title", "Unete");
-    	model.addAttribute("padron2k20", new Padron2k20());
+    	model.addAttribute("simpatizante", new Padron2020());
     	model.addAttribute("leaderCode", null);
         return "enter_cedula";
     }
     
     //2
     @RequestMapping(value="/nuevo_simpatizante/{leaderCode}",method = RequestMethod.POST)
-    public String saveVoter(@Valid Padron2k20 simpatizante, BindingResult result,RedirectAttributes flash,@PathVariable(value="leaderCode") String leaderCode,Model model) {
+    public String saveVoter(@Valid Padron2020 simpatizante, BindingResult result,RedirectAttributes flash,@PathVariable(value="leaderCode") String leaderCode,Model model) {
     	Voter finded=null;
     	try {
     		finded = voterService.findById(simpatizante.getCedula());
@@ -93,11 +93,11 @@ public class VoterController {
     	
     	
     	if(result.hasErrors()) {
-    		//model.addAttribute("title", "Unete");
-        	model.addAttribute("padron2k20", simpatizante);
-    		//flash.addFlashAttribute("warning","Cedula incorrecta");
-    		return "enter_cedula";
-    		//return (leaderCode != null)?"redirect:/voter/entrada_simpatizante/"+leaderCode:"redirect:/voter/entrada_simpatizante";
+    		model.addAttribute("title", "Unete");
+        	model.addAttribute("simpatizante", simpatizante);
+    		flash.addFlashAttribute("warning","Cedula incorrecta, solo 11 numeros");
+    		//return "enter_cedula";
+    		return (leaderCode != null)?"redirect:/voter/entrada_simpatizante/"+leaderCode:"redirect:/voter/entrada_simpatizante";
     	}
     	
     	Leader leader;
@@ -108,7 +108,7 @@ public class VoterController {
     		System.out.println("No encontro leader");
     		leader = null;
     	}
-    	Padron2k20 padron = padron2k20Service.findByCedula(simpatizante.getCedula());
+    	Padron2020 padron = padron2k20Service.findByCedula(simpatizante.getCedula());
     	Voter citizen = new Voter();
     	citizen.setCedula(simpatizante.getCedula());
     	citizen.setLeader(leader);
@@ -213,13 +213,23 @@ public class VoterController {
     }
     
     
+    @RequestMapping(value="/nuevo_simpatizante/{leaderCode}",method = RequestMethod.GET)
+    public String refresh_form(Model model){
+    	return "redirect:/voter/entrada_simpatizante";
+    }
+    
+    
     @RequestMapping(value="/listar-simpatizantes")
     public String listarSimpatizantes(@RequestParam(name="page", defaultValue = "0") int page,HttpSession session, Model model) {
     	
-    	if(session.getAttribute("user_name")==null)
+    	
+    	
+    	if(session.getAttribute("user_cedula")==null)
     		return "redirect:/";
-    	else if(!session.getAttribute("user_name").equals("ADMIN")) 
+    	 else if(userService.findByCedula(session.getAttribute("user_cedula").toString())== null)
     		return "redirect:/";
+    		
+    	
     	
     	
     	Pageable pageRequest = PageRequest.of(page, 5);
@@ -236,9 +246,9 @@ public class VoterController {
     
     @RequestMapping(value="/{cedula}")
     public String seeVoter(@PathVariable(value="cedula")String cedula,Model model ,HttpSession session,RedirectAttributes flash) {
-    	if(session.getAttribute("user_name")==null)
+    	if(session.getAttribute("user_cedula")==null)
     		return "redirect:/";
-    	else if(!session.getAttribute("user_name").equals("ADMIN")) 
+    	 else if(userService.findByCedula(session.getAttribute("user_cedula").toString())== null)
     		return "redirect:/";
     	
     	Voter voter=null;
@@ -277,9 +287,9 @@ public class VoterController {
     //Ver votantes por lugar form inicio
     @RequestMapping(value="/listarxlugar")
     public String byPlace(@RequestParam(name="page", defaultValue = "0") int page,HttpSession session, Model model) {
-    	if(session.getAttribute("user_name")==null)
+    	if(session.getAttribute("user_cedula")==null)
     		return "redirect:/";
-    	else if(!session.getAttribute("user_name").equals("ADMIN")) 
+    	 else if(userService.findByCedula(session.getAttribute("user_cedula").toString())== null)
     		return "redirect:/";
     	
     	Pageable pageRequest = PageRequest.of(page, 5);
@@ -298,9 +308,9 @@ public class VoterController {
     //Ver votantes por lugar form button
     @RequestMapping(value="/listarxlugar",method = RequestMethod.POST)
     public String byPlace(@RequestParam(name="page", defaultValue = "0") int page,@RequestParam int id,HttpSession session, Model model) {
-    	if(session.getAttribute("user_name")==null)
+    	if(session.getAttribute("user_cedula")==null)
     		return "redirect:/";
-    	else if(!session.getAttribute("user_name").equals("ADMIN")) 
+    	 else if(userService.findByCedula(session.getAttribute("user_cedula").toString())== null)
     		return "redirect:/";
     	
     	Pageable pageRequest = PageRequest.of(page, 5);
@@ -319,9 +329,9 @@ public class VoterController {
   //Ver votantes por lugar form button group place
     @RequestMapping(value="/listarxlugar/{sectorId}",method = RequestMethod.GET)
     public String byPlace2(@RequestParam(name="page", defaultValue = "0") int page, @PathVariable(value="sectorId")int sectorId, HttpSession session, Model model) {
-    	if(session.getAttribute("user_name")==null)
+    	if(session.getAttribute("user_cedula")==null)
     		return "redirect:/";
-    	else if(!session.getAttribute("user_name").equals("ADMIN")) 
+    	 else if(userService.findByCedula(session.getAttribute("user_cedula").toString())== null)
     		return "redirect:/";
     	
     	Pageable pageRequest = PageRequest.of(page, 5);
@@ -342,9 +352,9 @@ public class VoterController {
   //Ver votantes por leader form inicio
     @RequestMapping(value="/listarxdirigente")
     public String byLeader(@RequestParam(name="page", defaultValue = "0") int page,HttpSession session, Model model) {
-    	if(session.getAttribute("user_name")==null)
+    	if(session.getAttribute("user_cedula")==null)
     		return "redirect:/";
-    	else if(!session.getAttribute("user_name").equals("ADMIN")) 
+    	 else if(userService.findByCedula(session.getAttribute("user_cedula").toString())== null)
     		return "redirect:/";
     	
     	
@@ -364,9 +374,9 @@ public class VoterController {
     //Ver votantes por leader form button
     @RequestMapping(value="/listarxdirigente",method = RequestMethod.POST)
     public String byLeader(@RequestParam(name="page", defaultValue = "0") int page,@RequestParam int id,HttpSession session, Model model) {
-    	if(session.getAttribute("user_name")==null)
+    	if(session.getAttribute("user_cedula")==null)
     		return "redirect:/";
-    	else if(!session.getAttribute("user_name").equals("ADMIN")) 
+    	 else if(userService.findByCedula(session.getAttribute("user_cedula").toString())== null)
     		return "redirect:/";
     	
     	Pageable pageRequest = PageRequest.of(page, 5);
@@ -385,9 +395,9 @@ public class VoterController {
   //Ver votantes por leader form button group place
     @RequestMapping(value="/listarxdirigente/{leaderId}",method = RequestMethod.GET)
     public String byLeader2(@RequestParam(name="page", defaultValue = "0") int page, @PathVariable(value="leaderId") long leaderId,HttpSession session, Model model) {
-    	if(session.getAttribute("user_name")==null)
+    	if(session.getAttribute("user_cedula")==null)
     		return "redirect:/";
-    	else if(!session.getAttribute("user_name").equals("ADMIN")) 
+    	 else if(userService.findByCedula(session.getAttribute("user_cedula").toString())== null)
     		return "redirect:/";
     	
     	Pageable pageRequest = PageRequest.of(page, 5);
@@ -407,9 +417,9 @@ public class VoterController {
     
     @RequestMapping(value="/listarxindependiente")
     public String listarSimpatizantesInd(@RequestParam(name="page", defaultValue = "0") int page,HttpSession session, Model model) {
-    	if(session.getAttribute("user_name")==null)
+    	if(session.getAttribute("user_cedula")==null)
     		return "redirect:/";
-    	else if(!session.getAttribute("user_name").equals("ADMIN")) 
+    	 else if(userService.findByCedula(session.getAttribute("user_cedula").toString())== null)
     		return "redirect:/";
     	Pageable pageRequest = PageRequest.of(page, 5);
     	Page<Voter> voters = voterService.findByLeader(null,pageRequest);

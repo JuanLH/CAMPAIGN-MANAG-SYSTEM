@@ -1,14 +1,16 @@
 package com.juanlhiciano.app.models.service;
 
-import com.juanlhiciano.app.models.entity.UserT;
+import com.juanlhiciano.app.models.entity.User;
 
 import java.util.List;
 
 public interface IUserService {
 
-    public List<UserT> findAll();
-    public void save(UserT userT);
-    public UserT findById (String id);
+    public List<User> findAll();
+    public void save(User user);
+    public User findById (String id);
     public void delete(String id);
-    public UserT findByNameAndPassword(String user,String password);
+    public User findByNameAndPassword(String user,String password);
+    public User findByCedulaAndPassword(String cedula,String password);
+    public User findByCedula(String cedula);
 }

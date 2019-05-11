@@ -2,9 +2,11 @@ package com.juanlhiciano.app.controller;
 
 import com.juanlhiciano.app.models.entity.Leader;
 import com.juanlhiciano.app.models.entity.Sector;
+import com.juanlhiciano.app.models.entity.User;
 import com.juanlhiciano.app.models.entity.Voter;
 import com.juanlhiciano.app.models.service.ILeaderService;
 import com.juanlhiciano.app.models.service.ISectorService;
+import com.juanlhiciano.app.models.service.IUserService;
 import com.juanlhiciano.app.models.service.IVoterService;
 import com.juanlhiciano.app.util.paginator.PageRender;
 
@@ -41,6 +43,9 @@ public class LeaderController {
     
     @Autowired
     ISectorService sectorService;
+    
+    @Autowired
+    IUserService userService;
 
     @RequestMapping(value="test")
     public @ResponseBody List<Leader> getAll(){
@@ -59,10 +64,13 @@ public class LeaderController {
     public String saveLeader(@Valid Leader leader, BindingResult result, RedirectAttributes flash,Model model) {
 
     	Leader finded;
+    	User finded2;
     	
+    	//valido en ambas entidades si existe la cedula ya que el login es compartido y no pueden estar duplicados.
     	finded = leaderService.findByCedula(leader.getCedula());
-    	if(finded != null && finded.getId() != leader.getId()) {
-    		FieldError f = new FieldError("cedula", "cedula", "La cedula "+leader.getCedula()+" esta siendo usado por otro dirigente");
+    	finded2= userService.findByCedula(leader.getCedula());
+    	if(finded != null  || finded2 != null ) {
+    		FieldError f = new FieldError("cedula", "cedula", "La cedula "+leader.getCedula()+" esta siendo usado por otra persona");
     		result.addError(f);
     	}
     	

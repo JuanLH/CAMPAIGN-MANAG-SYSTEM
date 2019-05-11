@@ -20,4 +20,5 @@ public interface ILeaderService {
     public Leader findByEmail(String email);
     public Leader findByPhone(String phone);
     public Leader findByCodeAndPassword(String code,String password);
+    public Leader findByCedulaAndPassword(String cedula,String password);
 }

@@ -33,7 +33,7 @@ public class Leader implements Serializable  {
     String cedula;
     
     
-    @Email
+    
     @Column(unique = true)
     @NotEmpty
     @Pattern(regexp="\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}\\b")

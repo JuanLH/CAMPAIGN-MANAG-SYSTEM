@@ -15,7 +15,7 @@
 		<div class="card text-white bg-dark mb-3 content text-center ">
 			<div class="card-header font">Unete</div>
 			<div class="card-body">
-				<form th:action="@{/voter/nuevo_simpatizante/}+${leaderCode}" th:object="${padron2k20}" method="post">
+				<form th:action="@{/voter/nuevo_simpatizante/}+${leaderCode}" th:object="${simpatizante}" method="post">
 				
 					<div class="form-group ">
 						<label for="inputUserName">Cedula</label> 

@@ -92,11 +92,13 @@
 					 <div class="form-group">
 					  <label for="comment">Tu Pensar/Sugerencia:</label>
 					  <textarea class="form-control upper" rows="3" id="comment" th:field="*{pensar}"></textarea>
+					  <small class="form-text text-danger" th:if="${#fields.hasErrors('pensar')}" th:errors="*{pensar}"></small>
 					</div> 
 					
 					<div class="form-group">
 					  <label for="comment">Tu Necesidad:</label>
 					  <textarea class="form-control upper" rows="3" id="comment" th:field="*{necesidad}"></textarea>
+					  <small class="form-text text-danger" th:if="${#fields.hasErrors('necesidad')}" th:errors="*{necesidad}"></small>
 					</div> 
 
 					<div class="form-group ">
