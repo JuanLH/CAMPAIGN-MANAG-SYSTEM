@@ -23,15 +23,15 @@ public class Voter implements Serializable {
     String cedula;//***
 
     
-    @Pattern(regexp="^[a-zA-Z ]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$")
+    @Pattern(regexp="^[ña-zÑA-Z ]+(([',. -][ña-zÑA-Z ])?[ña-zÑA-Z]*)*$")
     String names;
     
     
-    @Pattern(regexp="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$")
+    @Pattern(regexp="^[ña-zÑA-Z]+(([',. -][ña-zÑA-Z ])?[ña-zÑA-Z]*)*$")
     String LastName1;
 
     
-    @Pattern(regexp="^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$")
+    @Pattern(regexp="^[ña-zÑA-Z]+(([',. -][ña-zÑA-Z ])?[ña-zÑA-Z]*)*$")
 	String LastName2;
     
     Timestamp dob;
@@ -76,10 +76,10 @@ public class Voter implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     Sector sector;//***
     
-    @Pattern(regexp="^[0-9a-zA-Z ]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$")
+    @Pattern(regexp="^[ña-zÑA-Z ]+(([',. -][ña-zÑA-Z ])?[ña-zÑA-Z]*)*$")
     String pensar;//***
     
-    @Pattern(regexp="^[0-9a-zA-Z ]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$")
+    @Pattern(regexp="^[ña-zÑA-Z ]+(([',. -][ña-zÑA-Z ])?[ña-zÑA-Z]*)*$")
     String necesidad;//***
     
     @Column(name="check_mark")

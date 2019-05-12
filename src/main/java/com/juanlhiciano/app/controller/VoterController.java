@@ -1,5 +1,6 @@
 package com.juanlhiciano.app.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -144,7 +145,7 @@ public class VoterController {
     
     //3
     @PostMapping(value="/save_voter")
-    public String saveVoter(@Valid Voter voter,BindingResult result,@RequestParam(name="g-recaptcha-response") String captchaResponse,Model model) {
+    public String saveVoter(@Valid Voter voter,BindingResult result,RedirectAttributes flash,@RequestParam(name="g-recaptcha-response") String captchaResponse,Model model,HttpServletRequest request) {
     	//Para poder actualizar el registro
     	String email = voter.getEmail();
     	String phone = voter.getPhone();
@@ -182,6 +183,22 @@ public class VoterController {
     	String url = "https://www.google.com/recaptcha/api/siteverify";
 		String params = "?secret=6LchAJgUAAAAALGyxvElCD8XE7R_KKccuYv7tZ3-&response="+captchaResponse;
 		
+		ReCaptchaResponse reCaptchaResponse = restTemplate.exchange(url+params, HttpMethod.POST, null, ReCaptchaResponse.class).getBody();
+		
+		
+		if(reCaptchaResponse.isSuccess()) {
+			
+			voterService.save(voter);
+			return "redirect:/";
+		} else {
+			flash.addFlashAttribute("error", "Verifique el Capcha");
+			//return "redirect:"+request.getHeader("Referer");
+			FieldError f = new FieldError("verCed", "verCed", "Verifique el capcha");
+    		result.addError(f);
+			//voterService.save(voter);
+			//return (voter.getLeader()!=null)?"redirect:/voter/entrada_simpatizante/"+voter.getLeader().getCode()+"":"redirect:/voter/entrada_simpatizante";
+		}
+		
 		if(result.hasErrors()) {
 			System.out.println("Error Count = "+result.getErrorCount());
 			
@@ -193,23 +210,12 @@ public class VoterController {
 			model.addAttribute("sectors", sectorService.findAll());
 			//boolean disable = (voter.getNames() != null)? true: false;
 			//model.addAttribute("disable", disable);
-    		return "new_voter";
+    		
     	}
 		
+		return "new_voter";
 		
-		ReCaptchaResponse reCaptchaResponse = restTemplate.exchange(url+params, HttpMethod.POST, null, ReCaptchaResponse.class).getBody();
 		
-		
-		if(reCaptchaResponse.isSuccess()) {
-			
-			voterService.save(voter);
-			return "redirect:/";
-		} else {
-			//message = "Please verify captcha";
-			//return "redirect:/";
-			voterService.save(voter);
-			return (voter.getLeader()!=null)?"redirect:/voter/entrada_simpatizante/"+voter.getLeader().getCode()+"":"redirect:/voter/entrada_simpatizante";
-		}
     }
     
     

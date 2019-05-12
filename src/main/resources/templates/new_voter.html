@@ -104,6 +104,7 @@
 					<div class="form-group ">
 						<div class="col-md-12 g-recaptcha center"
 							data-sitekey="6LchAJgUAAAAAASUMQf59_v8leDEpKkO3xMS6bEa"></div>
+						<small class="form-text text-danger" th:if="${#fields.hasErrors('verCed')}" th:errors="*{verCed}"></small>	
 					</div>
 
 
