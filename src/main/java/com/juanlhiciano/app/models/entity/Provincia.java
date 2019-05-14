@@ -15,13 +15,8 @@ import java.util.List;
 public class Provincia implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Column(name="Descripcion")
-	private String descripcion;
-
 	@Column(name="Estatus")
 	private String estatus;
-
-	private short IDMunicipioCabecera;
 
 	@Column(name="Oficio")
 	private BigDecimal oficio;
@@ -29,25 +24,28 @@ public class Provincia implements Serializable {
 	@Column(name="RegID")
 	private String regID;
 
-	@Column(name="Region")
-	private int region;
-
 	@Column(name="ZONA")
 	private String zona;
 
-	//bi-directional many-to-one association to Municipio
+	//bi-directional many-to-one association to Circunscripcion
 	@OneToMany(mappedBy="provincia")
+	private List<Circunscripcion> circunscripcions;
+
+	//bi-directional many-to-one association to Municipio
+	@OneToMany(mappedBy="provincia1")
 	private List<Municipio> municipios;
 
+	//bi-directional one-to-one association to Municipio
+	@OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="IDMunicipioCabecera", referencedColumnName="ID")
+	private Municipio municipio;
+
+	//bi-directional many-to-one association to Region
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="Region", referencedColumnName="ID")
+	private Region regionBean;
+
 	public Provincia() {
-	}
-
-	public String getDescripcion() {
-		return this.descripcion;
-	}
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
 	}
 
 	public String getEstatus() {
@@ -56,14 +54,6 @@ public class Provincia implements Serializable {
 
 	public void setEstatus(String estatus) {
 		this.estatus = estatus;
-	}
-
-	public short getIDMunicipioCabecera() {
-		return this.IDMunicipioCabecera;
-	}
-
-	public void setIDMunicipioCabecera(short IDMunicipioCabecera) {
-		this.IDMunicipioCabecera = IDMunicipioCabecera;
 	}
 
 	public BigDecimal getOficio() {
@@ -82,20 +72,34 @@ public class Provincia implements Serializable {
 		this.regID = regID;
 	}
 
-	public int getRegion() {
-		return this.region;
-	}
-
-	public void setRegion(int region) {
-		this.region = region;
-	}
-
 	public String getZona() {
 		return this.zona;
 	}
 
 	public void setZona(String zona) {
 		this.zona = zona;
+	}
+
+	public List<Circunscripcion> getCircunscripcions() {
+		return this.circunscripcions;
+	}
+
+	public void setCircunscripcions(List<Circunscripcion> circunscripcions) {
+		this.circunscripcions = circunscripcions;
+	}
+
+	public Circunscripcion addCircunscripcion(Circunscripcion circunscripcion) {
+		getCircunscripcions().add(circunscripcion);
+		circunscripcion.setProvincia(this);
+
+		return circunscripcion;
+	}
+
+	public Circunscripcion removeCircunscripcion(Circunscripcion circunscripcion) {
+		getCircunscripcions().remove(circunscripcion);
+		circunscripcion.setProvincia(null);
+
+		return circunscripcion;
 	}
 
 	public List<Municipio> getMunicipios() {
@@ -108,16 +112,32 @@ public class Provincia implements Serializable {
 
 	public Municipio addMunicipio(Municipio municipio) {
 		getMunicipios().add(municipio);
-		municipio.setProvincia(this);
+		municipio.setProvincia1(this);
 
 		return municipio;
 	}
 
 	public Municipio removeMunicipio(Municipio municipio) {
 		getMunicipios().remove(municipio);
-		municipio.setProvincia(null);
+		municipio.setProvincia1(null);
 
 		return municipio;
+	}
+
+	public Municipio getMunicipio() {
+		return this.municipio;
+	}
+
+	public void setMunicipio(Municipio municipio) {
+		this.municipio = municipio;
+	}
+
+	public Region getRegionBean() {
+		return this.regionBean;
+	}
+
+	public void setRegionBean(Region regionBean) {
+		this.regionBean = regionBean;
 	}
 
 }

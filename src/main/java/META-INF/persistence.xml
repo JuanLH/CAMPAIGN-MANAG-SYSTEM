@@ -5,7 +5,25 @@
 		<class>com.juanlhiciano.app.models.entity.Sector</class>
 		<class>com.juanlhiciano.app.models.entity.User</class>
 		<class>com.juanlhiciano.app.models.entity.Voter</class>
-		<class>com.juanlhiciano.app.models.entity.Padron2020</class>
+		<class>com.juanlhiciano.app.models.entity.Padron2k20</class>
 		<class>com.juanlhiciano.app.models.entity.UserType</class>
+		<class>com.juanlhiciano.app.models.entity.CancelacionTipoCausa</class>
+		<class>com.juanlhiciano.app.models.entity.Categoria</class>
+		<class>com.juanlhiciano.app.models.entity.CausaCancelacion</class>
+		<class>com.juanlhiciano.app.models.entity.Circunscripcion</class>
+		<class>com.juanlhiciano.app.models.entity.CiudadSeccion</class>
+		<class>com.juanlhiciano.app.models.entity.Colegio</class>
+		<class>com.juanlhiciano.app.models.entity.EstadoCivil</class>
+		<class>com.juanlhiciano.app.models.entity.MacroRegion</class>
+		<class>com.juanlhiciano.app.models.entity.Municipio</class>
+		<class>com.juanlhiciano.app.models.entity.Nacionalidad</class>
+		<class>com.juanlhiciano.app.models.entity.Ocupacion</class>
+		<class>com.juanlhiciano.app.models.entity.Provincia</class>
+		<class>com.juanlhiciano.app.models.entity.Recinto</class>
+		<class>com.juanlhiciano.app.models.entity.Region</class>
+		<class>com.juanlhiciano.app.models.entity.SectorParaje</class>
+		<class>com.juanlhiciano.app.models.entity.Sexo</class>
+		<class>com.juanlhiciano.app.models.entity.Zona</class>
+		<class>com.juanlhiciano.app.models.entity.Padron2020</class>
 	</persistence-unit>
 </persistence>

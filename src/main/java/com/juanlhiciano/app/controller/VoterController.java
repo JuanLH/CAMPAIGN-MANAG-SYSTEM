@@ -24,7 +24,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.juanlhiciano.app.models.entity.Leader;
-import com.juanlhiciano.app.models.entity.Padron2020;
+import com.juanlhiciano.app.models.entity.Padron2k20;
 import com.juanlhiciano.app.models.entity.Sector;
 import com.juanlhiciano.app.models.entity.Voter;
 import com.juanlhiciano.app.models.service.ILeaderService;
@@ -63,7 +63,7 @@ public class VoterController {
     @RequestMapping(value="/entrada_simpatizante/{leaderCode}")
     public String newVoter(@PathVariable(value="leaderCode") String leaderCode,Model model){
     	model.addAttribute("title", "Unete");
-    	model.addAttribute("simpatizante", new Padron2020());
+    	model.addAttribute("simpatizante", new Padron2k20());
     	model.addAttribute("leaderCode", leaderCode);
         return "enter_cedula";
     }
@@ -72,14 +72,14 @@ public class VoterController {
     @RequestMapping(value="/entrada_simpatizante")
     public String newVoter(Model model){
     	model.addAttribute("title", "Unete");
-    	model.addAttribute("simpatizante", new Padron2020());
+    	model.addAttribute("simpatizante", new Padron2k20());
     	model.addAttribute("leaderCode", null);
         return "enter_cedula";
     }
     
     //2
     @RequestMapping(value="/nuevo_simpatizante/{leaderCode}",method = RequestMethod.POST)
-    public String saveVoter(@Valid Padron2020 simpatizante, BindingResult result,RedirectAttributes flash,@PathVariable(value="leaderCode") String leaderCode,Model model) {
+    public String saveVoter(@Valid Padron2k20 simpatizante, BindingResult result,RedirectAttributes flash,@PathVariable(value="leaderCode") String leaderCode,Model model) {
     	Voter finded=null;
     	try {
     		finded = voterService.findById(simpatizante.getCedula());
@@ -109,7 +109,7 @@ public class VoterController {
     		System.out.println("No encontro leader");
     		leader = null;
     	}
-    	Padron2020 padron = padron2k20Service.findByCedula(simpatizante.getCedula());
+    	Padron2k20 padron = padron2k20Service.findByCedula(simpatizante.getCedula());
     	Voter citizen = new Voter();
     	citizen.setCedula(simpatizante.getCedula());
     	citizen.setLeader(leader);

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.juanlhiciano.app.models.dao.IPadron2k20Dao;
-import com.juanlhiciano.app.models.entity.Padron2020;
+import com.juanlhiciano.app.models.entity.Padron2k20;
 
 @Service
 public class Padron2k20Service implements IPadron2k20Service {
@@ -13,7 +13,7 @@ public class Padron2k20Service implements IPadron2k20Service {
 	IPadron2k20Dao padron;
 
 	@Override
-	public Padron2020 findByCedula(String cedula) {
+	public Padron2k20 findByCedula(String cedula) {
 		return padron.findByCedula(cedula);
 	}
 	

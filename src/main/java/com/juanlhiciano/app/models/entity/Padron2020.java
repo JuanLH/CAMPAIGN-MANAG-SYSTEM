@@ -2,60 +2,58 @@ package com.juanlhiciano.app.models.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import java.sql.Timestamp;
 
 
 /**
- * The persistent class for the padron2k20 database table.
+ * The persistent class for the padron2020 database table.
  * 
  */
 @Entity
+@Table(name="padron2020")
+@NamedQuery(name="Padron2020.findAll", query="SELECT p FROM Padron2020 p")
 public class Padron2020 implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@Column(name="Apellido1")
+	private String apellido1;
+
+	@Column(name="Apellido2")
+	private String apellido2;
+	
 	@Id
 	@Pattern(regexp="(^$|[0-9]{11})")
 	@NotEmpty
+	@Column(name="Cedula")
 	private String cedula;
 
-	private String apellido1;
+	@Column(name="CedulaAnterior")
+	private String cedulaAnterior;
 
-	private String apellido2;
+	@Column(name="EstatusCedulaAzul")
+	private String estatusCedulaAzul;
 
-	private String cedulaanterior;
+	@Column(name="FechaNacimiento")
+	private Timestamp fechaNacimiento;
 
-	private String estatuscedulaazul;
+	@Column(name="IdEstadoCivil")
+	private String idEstadoCivil;
 
-	private Timestamp fechanacimiento;
+	private String IDEstatus;
 
-	private Integer idcategoria;
+	@Column(name="IdSexo")
+	private String idSexo;
 
-	private String idcausacancelacion;
-
-	private String idcolegio;
-
-	private String idestadocivil;
-
-	private String idestatus;
-
-	private String idmunicipio;
-
-	private Integer idnacionalidad;
-
-	private Integer idocupacion;
-
-	private String idsexo;
-
-	private String lugarnacimiento;
+	@Column(name="LugarNacimiento")
+	private String lugarNacimiento;
 
 	@Column(name="mun_ced")
 	private String munCed;
 
+	@Column(name="Nombres")
 	private String nombres;
 
 	@Column(name="seq_ced")
@@ -64,15 +62,37 @@ public class Padron2020 implements Serializable {
 	@Column(name="ver_ced")
 	private String verCed;
 
+	//bi-directional many-to-one association to Categoria
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="IDCategoria", referencedColumnName="ID")
+	private Categoria categoria;
+
+	//bi-directional many-to-one association to Ocupacion
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="IdOcupacion", referencedColumnName="ID")
+	private Ocupacion ocupacion;
+
+	//bi-directional many-to-one association to Nacionalidad
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="IDNacionalidad", referencedColumnName="ID")
+	private Nacionalidad nacionalidad;
+
+	//bi-directional many-to-one association to Municipio
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="IDMunicipio", referencedColumnName="ID")
+	private Municipio municipio;
+
+	//bi-directional many-to-one association to Colegio
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="IDColegio", referencedColumnName="IDColegio")
+	private Colegio colegio;
+
+	//bi-directional many-to-one association to CausaCancelacion
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="IDCausaCancelacion", referencedColumnName="ID")
+	private CausaCancelacion causaCancelacion;
+
 	public Padron2020() {
-	}
-
-	public String getCedula() {
-		return this.cedula;
-	}
-
-	public void setCedula(String cedula) {
-		this.cedula = cedula;
 	}
 
 	public String getApellido1() {
@@ -91,108 +111,68 @@ public class Padron2020 implements Serializable {
 		this.apellido2 = apellido2;
 	}
 
-	public String getCedulaanterior() {
-		return this.cedulaanterior;
+	public String getCedula() {
+		return this.cedula;
 	}
 
-	public void setCedulaanterior(String cedulaanterior) {
-		this.cedulaanterior = cedulaanterior;
+	public void setCedula(String cedula) {
+		this.cedula = cedula;
 	}
 
-	public String getEstatuscedulaazul() {
-		return this.estatuscedulaazul;
+	public String getCedulaAnterior() {
+		return this.cedulaAnterior;
 	}
 
-	public void setEstatuscedulaazul(String estatuscedulaazul) {
-		this.estatuscedulaazul = estatuscedulaazul;
+	public void setCedulaAnterior(String cedulaAnterior) {
+		this.cedulaAnterior = cedulaAnterior;
 	}
 
-	public Timestamp getFechanacimiento() {
-		return this.fechanacimiento;
+	public String getEstatusCedulaAzul() {
+		return this.estatusCedulaAzul;
 	}
 
-	public void setFechanacimiento(Timestamp fechanacimiento) {
-		this.fechanacimiento = fechanacimiento;
+	public void setEstatusCedulaAzul(String estatusCedulaAzul) {
+		this.estatusCedulaAzul = estatusCedulaAzul;
 	}
 
-	public Integer getIdcategoria() {
-		return this.idcategoria;
+	public Timestamp getFechaNacimiento() {
+		return this.fechaNacimiento;
 	}
 
-	public void setIdcategoria(Integer idcategoria) {
-		this.idcategoria = idcategoria;
+	public void setFechaNacimiento(Timestamp fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
 	}
 
-	public String getIdcausacancelacion() {
-		return this.idcausacancelacion;
+	public String getIdEstadoCivil() {
+		return this.idEstadoCivil;
 	}
 
-	public void setIdcausacancelacion(String idcausacancelacion) {
-		this.idcausacancelacion = idcausacancelacion;
+	public void setIdEstadoCivil(String idEstadoCivil) {
+		this.idEstadoCivil = idEstadoCivil;
 	}
 
-	public String getIdcolegio() {
-		return this.idcolegio;
+	public String getIDEstatus() {
+		return this.IDEstatus;
 	}
 
-	public void setIdcolegio(String idcolegio) {
-		this.idcolegio = idcolegio;
+	public void setIDEstatus(String IDEstatus) {
+		this.IDEstatus = IDEstatus;
 	}
 
-	public String getIdestadocivil() {
-		return this.idestadocivil;
+	public String getIdSexo() {
+		return this.idSexo;
 	}
 
-	public void setIdestadocivil(String idestadocivil) {
-		this.idestadocivil = idestadocivil;
+	public void setIdSexo(String idSexo) {
+		this.idSexo = idSexo;
 	}
 
-	public String getIdestatus() {
-		return this.idestatus;
+	public String getLugarNacimiento() {
+		return this.lugarNacimiento;
 	}
 
-	public void setIdestatus(String idestatus) {
-		this.idestatus = idestatus;
-	}
-
-	public String getIdmunicipio() {
-		return this.idmunicipio;
-	}
-
-	public void setIdmunicipio(String idmunicipio) {
-		this.idmunicipio = idmunicipio;
-	}
-
-	public Integer getIdnacionalidad() {
-		return this.idnacionalidad;
-	}
-
-	public void setIdnacionalidad(Integer idnacionalidad) {
-		this.idnacionalidad = idnacionalidad;
-	}
-
-	public Integer getIdocupacion() {
-		return this.idocupacion;
-	}
-
-	public void setIdocupacion(Integer idocupacion) {
-		this.idocupacion = idocupacion;
-	}
-
-	public String getIdsexo() {
-		return this.idsexo;
-	}
-
-	public void setIdsexo(String idsexo) {
-		this.idsexo = idsexo;
-	}
-
-	public String getLugarnacimiento() {
-		return this.lugarnacimiento;
-	}
-
-	public void setLugarnacimiento(String lugarnacimiento) {
-		this.lugarnacimiento = lugarnacimiento;
+	public void setLugarNacimiento(String lugarNacimiento) {
+		this.lugarNacimiento = lugarNacimiento;
 	}
 
 	public String getMunCed() {
@@ -225,6 +205,54 @@ public class Padron2020 implements Serializable {
 
 	public void setVerCed(String verCed) {
 		this.verCed = verCed;
+	}
+
+	public Categoria getCategoria() {
+		return this.categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
+
+	public Ocupacion getOcupacion() {
+		return this.ocupacion;
+	}
+
+	public void setOcupacion(Ocupacion ocupacion) {
+		this.ocupacion = ocupacion;
+	}
+
+	public Nacionalidad getNacionalidad() {
+		return this.nacionalidad;
+	}
+
+	public void setNacionalidad(Nacionalidad nacionalidad) {
+		this.nacionalidad = nacionalidad;
+	}
+
+	public Municipio getMunicipio() {
+		return this.municipio;
+	}
+
+	public void setMunicipio(Municipio municipio) {
+		this.municipio = municipio;
+	}
+
+	public Colegio getColegio() {
+		return this.colegio;
+	}
+
+	public void setColegio(Colegio colegio) {
+		this.colegio = colegio;
+	}
+
+	public CausaCancelacion getCausaCancelacion() {
+		return this.causaCancelacion;
+	}
+
+	public void setCausaCancelacion(CausaCancelacion causaCancelacion) {
+		this.causaCancelacion = causaCancelacion;
 	}
 
 }
