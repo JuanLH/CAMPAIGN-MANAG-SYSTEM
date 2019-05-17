@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import java.sql.Timestamp;
 
@@ -26,71 +27,60 @@ public class Padron2020 implements Serializable {
 	
 	@Id
 	@Pattern(regexp="(^$|[0-9]{11})")
-	@NotEmpty
+    @NotEmpty
 	@Column(name="Cedula")
 	private String cedula;
 
+	
 	@Column(name="CedulaAnterior")
+	@Size(max=10)
 	private String cedulaAnterior;
 
 	@Column(name="EstatusCedulaAzul")
-	private String estatusCedulaAzul;
+	private char estatusCedulaAzul;
 
 	@Column(name="FechaNacimiento")
 	private Timestamp fechaNacimiento;
 
+	private short IDCategoria;
+
+	@Column(name="IDCausaCancelacion")
+	private Integer idcausa_cancelacion;
+
+	private int IDColegio;
+
 	@Column(name="IdEstadoCivil")
 	private String idEstadoCivil;
 
-	private String IDEstatus;
+	private char IDEstatus;
+
+	private short IDMunicipio;
+
+	private short IDNacionalidad;
+
+	@Column(name="IdOcupacion")
+	private short idOcupacion;
 
 	@Column(name="IdSexo")
-	private String idSexo;
+	private char idSexo;
 
 	@Column(name="LugarNacimiento")
 	private String lugarNacimiento;
 
+	@Size(max=3)
 	@Column(name="mun_ced")
 	private String munCed;
 
 	@Column(name="Nombres")
 	private String nombres;
 
+	@Size(max=7)
 	@Column(name="seq_ced")
 	private String seqCed;
 
+	@Size(max=1)
 	@Column(name="ver_ced")
 	private String verCed;
-
-	//bi-directional many-to-one association to Categoria
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="IDCategoria", referencedColumnName="ID")
-	private Categoria categoria;
-
-	//bi-directional many-to-one association to Ocupacion
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="IdOcupacion", referencedColumnName="ID")
-	private Ocupacion ocupacion;
-
-	//bi-directional many-to-one association to Nacionalidad
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="IDNacionalidad", referencedColumnName="ID")
-	private Nacionalidad nacionalidad;
-
-	//bi-directional many-to-one association to Municipio
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="IDMunicipio", referencedColumnName="ID")
-	private Municipio municipio;
-
-	//bi-directional many-to-one association to Colegio
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="IDColegio", referencedColumnName="IDColegio")
-	private Colegio colegio;
-
-	//bi-directional many-to-one association to CausaCancelacion
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="IDCausaCancelacion", referencedColumnName="ID")
-	private CausaCancelacion causaCancelacion;
 
 	public Padron2020() {
 	}
@@ -127,11 +117,11 @@ public class Padron2020 implements Serializable {
 		this.cedulaAnterior = cedulaAnterior;
 	}
 
-	public String getEstatusCedulaAzul() {
+	public char getEstatusCedulaAzul() {
 		return this.estatusCedulaAzul;
 	}
 
-	public void setEstatusCedulaAzul(String estatusCedulaAzul) {
+	public void setEstatusCedulaAzul(char estatusCedulaAzul) {
 		this.estatusCedulaAzul = estatusCedulaAzul;
 	}
 
@@ -143,6 +133,30 @@ public class Padron2020 implements Serializable {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
+	public short getIDCategoria() {
+		return this.IDCategoria;
+	}
+
+	public void setIDCategoria(short IDCategoria) {
+		this.IDCategoria = IDCategoria;
+	}
+
+	public int getIDCausaCancelacion() {
+		return this.idcausa_cancelacion;
+	}
+
+	public void setIDCausaCancelacion(int IDCausaCancelacion) {
+		this.idcausa_cancelacion = IDCausaCancelacion;
+	}
+
+	public int getIDColegio() {
+		return this.IDColegio;
+	}
+
+	public void setIDColegio(int IDColegio) {
+		this.IDColegio = IDColegio;
+	}
+
 	public String getIdEstadoCivil() {
 		return this.idEstadoCivil;
 	}
@@ -151,19 +165,43 @@ public class Padron2020 implements Serializable {
 		this.idEstadoCivil = idEstadoCivil;
 	}
 
-	public String getIDEstatus() {
+	public char getIDEstatus() {
 		return this.IDEstatus;
 	}
 
-	public void setIDEstatus(String IDEstatus) {
+	public void setIDEstatus(char IDEstatus) {
 		this.IDEstatus = IDEstatus;
 	}
 
-	public String getIdSexo() {
+	public short getIDMunicipio() {
+		return this.IDMunicipio;
+	}
+
+	public void setIDMunicipio(short IDMunicipio) {
+		this.IDMunicipio = IDMunicipio;
+	}
+
+	public short getIDNacionalidad() {
+		return this.IDNacionalidad;
+	}
+
+	public void setIDNacionalidad(short IDNacionalidad) {
+		this.IDNacionalidad = IDNacionalidad;
+	}
+
+	public short getIdOcupacion() {
+		return this.idOcupacion;
+	}
+
+	public void setIdOcupacion(short idOcupacion) {
+		this.idOcupacion = idOcupacion;
+	}
+
+	public char getIdSexo() {
 		return this.idSexo;
 	}
 
-	public void setIdSexo(String idSexo) {
+	public void setIdSexo(char idSexo) {
 		this.idSexo = idSexo;
 	}
 
@@ -205,54 +243,6 @@ public class Padron2020 implements Serializable {
 
 	public void setVerCed(String verCed) {
 		this.verCed = verCed;
-	}
-
-	public Categoria getCategoria() {
-		return this.categoria;
-	}
-
-	public void setCategoria(Categoria categoria) {
-		this.categoria = categoria;
-	}
-
-	public Ocupacion getOcupacion() {
-		return this.ocupacion;
-	}
-
-	public void setOcupacion(Ocupacion ocupacion) {
-		this.ocupacion = ocupacion;
-	}
-
-	public Nacionalidad getNacionalidad() {
-		return this.nacionalidad;
-	}
-
-	public void setNacionalidad(Nacionalidad nacionalidad) {
-		this.nacionalidad = nacionalidad;
-	}
-
-	public Municipio getMunicipio() {
-		return this.municipio;
-	}
-
-	public void setMunicipio(Municipio municipio) {
-		this.municipio = municipio;
-	}
-
-	public Colegio getColegio() {
-		return this.colegio;
-	}
-
-	public void setColegio(Colegio colegio) {
-		this.colegio = colegio;
-	}
-
-	public CausaCancelacion getCausaCancelacion() {
-		return this.causaCancelacion;
-	}
-
-	public void setCausaCancelacion(CausaCancelacion causaCancelacion) {
-		this.causaCancelacion = causaCancelacion;
 	}
 
 }

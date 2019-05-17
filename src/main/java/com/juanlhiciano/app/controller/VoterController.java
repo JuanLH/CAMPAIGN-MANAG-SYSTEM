@@ -24,11 +24,11 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.juanlhiciano.app.models.entity.Leader;
-import com.juanlhiciano.app.models.entity.Padron2k20;
+import com.juanlhiciano.app.models.entity.Padron2020;
 import com.juanlhiciano.app.models.entity.Sector;
 import com.juanlhiciano.app.models.entity.Voter;
 import com.juanlhiciano.app.models.service.ILeaderService;
-import com.juanlhiciano.app.models.service.IPadron2k20Service;
+import com.juanlhiciano.app.models.service.IPadron2020Service;
 import com.juanlhiciano.app.models.service.ISectorService;
 import com.juanlhiciano.app.models.service.IUserService;
 import com.juanlhiciano.app.models.service.IVoterService;
@@ -49,7 +49,7 @@ public class VoterController {
     private RestTemplate restTemplate;
     
     @Autowired
-    private IPadron2k20Service padron2k20Service;
+    private IPadron2020Service Padron2020Service;
     
     @Autowired
     private ILeaderService leaderService;
@@ -63,7 +63,7 @@ public class VoterController {
     @RequestMapping(value="/entrada_simpatizante/{leaderCode}")
     public String newVoter(@PathVariable(value="leaderCode") String leaderCode,Model model){
     	model.addAttribute("title", "Unete");
-    	model.addAttribute("simpatizante", new Padron2k20());
+    	model.addAttribute("simpatizante", new Padron2020());
     	model.addAttribute("leaderCode", leaderCode);
         return "enter_cedula";
     }
@@ -72,14 +72,14 @@ public class VoterController {
     @RequestMapping(value="/entrada_simpatizante")
     public String newVoter(Model model){
     	model.addAttribute("title", "Unete");
-    	model.addAttribute("simpatizante", new Padron2k20());
+    	model.addAttribute("simpatizante", new Padron2020());
     	model.addAttribute("leaderCode", null);
         return "enter_cedula";
     }
     
     //2
     @RequestMapping(value="/nuevo_simpatizante/{leaderCode}",method = RequestMethod.POST)
-    public String saveVoter(@Valid Padron2k20 simpatizante, BindingResult result,RedirectAttributes flash,@PathVariable(value="leaderCode") String leaderCode,Model model) {
+    public String saveVoter(@Valid Padron2020 simpatizante, BindingResult result,RedirectAttributes flash,@PathVariable(value="leaderCode") String leaderCode,Model model) {
     	Voter finded=null;
     	try {
     		finded = voterService.findById(simpatizante.getCedula());
@@ -109,7 +109,7 @@ public class VoterController {
     		System.out.println("No encontro leader");
     		leader = null;
     	}
-    	Padron2k20 padron = padron2k20Service.findByCedula(simpatizante.getCedula());
+    	Padron2020 padron = Padron2020Service.findByCedula(simpatizante.getCedula());
     	Voter citizen = new Voter();
     	citizen.setCedula(simpatizante.getCedula());
     	citizen.setLeader(leader);
@@ -118,15 +118,15 @@ public class VoterController {
     		citizen.setNames(padron.getNombres());
     		citizen.setLastName1(padron.getApellido1());
     		citizen.setLastName2(padron.getApellido2());
-    		citizen.setDob(padron.getFechanacimiento());
-    		citizen.setPlaceOfBirth(padron.getLugarnacimiento());
-    		citizen.setIdCategoria(padron.getIdcategoria());
-    		citizen.setIdSexo(padron.getIdsexo());
-    		citizen.setEstadoCivil(padron.getIdestadocivil());
-    		citizen.setIdOcupacion(padron.getIdocupacion());
-    		citizen.setIdNacionalidad(padron.getIdnacionalidad());
-    		citizen.setIdMunicipio(Integer.parseInt(padron.getIdmunicipio()));
-    		citizen.setColegioElectoral(padron.getIdcolegio());
+    		citizen.setDob(padron.getFechaNacimiento());
+    		citizen.setPlaceOfBirth(padron.getLugarNacimiento());
+    		citizen.setCategoria(padron.getIDCategoria());
+    		citizen.setIdSexo(padron.getIdSexo());
+    		citizen.setEstadoCivil(padron.getIdEstadoCivil());
+    		citizen.setOcupacion(padron.getIdOcupacion());
+    		citizen.setNacionalidad(padron.getIDNacionalidad());
+    		citizen.setMunicipio(padron.getIDMunicipio());
+    		citizen.setColegioElectoral(padron.getIDColegio());
     		citizen.setMunCed(padron.getMunCed());
     		citizen.setSeqCed(padron.getSeqCed());
     		citizen.setVerCed(padron.getVerCed());

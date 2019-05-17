@@ -34,23 +34,23 @@ public class Voter implements Serializable {
     @Pattern(regexp="^[ña-zÑA-Z]+(([',. -][ña-zÑA-Z ])?[ña-zÑA-Z]*)*$")
 	String LastName2;
     
-    Timestamp dob;
+    Date dob;
     
     String placeOfBirth;
     
-    int idCategoria;
+    short categoria;
     
-    String idSexo;
+    char sexo;
     
     String estadoCivil;
     
-    int idOcupacion;
+    short ocupacion;
     
-    int idNacionalidad;
+    short nacionalidad;
     
-    int idMunicipio;
+    short municipio;
     
-    String colegioElectoral;
+    int colegioElectoral;
     
     String munCed;
     String seqCed;
@@ -126,11 +126,11 @@ public class Voter implements Serializable {
 		LastName2 = lastName2;
 	}
 
-	public Timestamp getDob() {
+	public Date getDob() {
 		return dob;
 	}
 
-	public void setDob(Timestamp date) {
+	public void setDob(Date date) {
 		this.dob = date;
 	}
 
@@ -142,20 +142,18 @@ public class Voter implements Serializable {
 		this.placeOfBirth = placeOfBirth;
 	}
 
-	public int getIdCategoria() {
-		return idCategoria;
+	
+
+	public short getCategoria() {
+		return categoria;
 	}
 
-	public void setIdCategoria(int idCategoria) {
-		this.idCategoria = idCategoria;
+	public char getIdSexo() {
+		return sexo;
 	}
 
-	public String getIdSexo() {
-		return idSexo;
-	}
-
-	public void setIdSexo(String idSexo) {
-		this.idSexo = idSexo;
+	public void setIdSexo(char sexo) {
+		this.sexo = sexo;
 	}
 
 	public String getEstadoCivil() {
@@ -166,36 +164,48 @@ public class Voter implements Serializable {
 		this.estadoCivil = estadoCivil;
 	}
 
-	public int getIdOcupacion() {
-		return idOcupacion;
+	public short getOcupacion() {
+		return ocupacion;
 	}
 
-	public void setIdOcupacion(int idOcupacion) {
-		this.idOcupacion = idOcupacion;
+	public void setOcupacion(short ocupacion) {
+		this.ocupacion = ocupacion;
 	}
 
-	public int getIdNacionalidad() {
-		return idNacionalidad;
+	public short getNacionalidad() {
+		return nacionalidad;
 	}
 
-	public void setIdNacionalidad(int idNacionalidad) {
-		this.idNacionalidad = idNacionalidad;
+	public void setNacionalidad(short nacionalidad) {
+		this.nacionalidad = nacionalidad;
 	}
 
-	public int getIdMunicipio() {
-		return idMunicipio;
+	public short getMunicipio() {
+		return municipio;
 	}
 
-	public void setIdMunicipio(int idMunicipio) {
-		this.idMunicipio = idMunicipio;
+	public void setMunicipio(short municipio) {
+		this.municipio = municipio;
 	}
 
-	public String getColegioElectoral() {
+	public int getColegioElectoral() {
 		return colegioElectoral;
 	}
 
-	public void setColegioElectoral(String colegioElectoral) {
+	public void setColegioElectoral(int colegioElectoral) {
 		this.colegioElectoral = colegioElectoral;
+	}
+
+	public Date getRegistration() {
+		return registration;
+	}
+
+	public void setRegistration(Date registration) {
+		this.registration = registration;
+	}
+
+	public void setCategoria(short categoria) {
+		this.categoria = categoria;
 	}
 
 	public String getMunCed() {
