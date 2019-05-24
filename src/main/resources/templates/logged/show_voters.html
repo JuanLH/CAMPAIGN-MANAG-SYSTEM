@@ -25,8 +25,12 @@
 
 					<div class="card bg-light">
 						<div class="card-header">
-							<h4><b><p th:text="${title}"></p></b></h4>
-							<p><b>Total en consulta = </b> <em th:text="${total_consult}"></em></p>  
+							<h4>
+								<b><p th:text="${title}"></p></b>
+							</h4>
+							<p>
+								<b>Total en consulta = </b> <em th:text="${total_consult}"></em>
+							</p>
 						</div>
 						<div class="card-body">
 
@@ -45,8 +49,8 @@
 										<th>correo</th>
 										<th>ver mas</th>
 										<th>pendiente</th>
-										
-										
+
+
 									</tr>
 								</thead>
 								<tbody>
@@ -59,14 +63,12 @@
 										<td th:text="${voter.email}"></td>
 										<td><a class="btn btn-primary btn-xs"
 											th:href="@{/voter/} + ${voter.cedula}" th:text="'ver mas'"></a></td>
-										<td>
-											
-												<a th:if="${not voter.check}" class="btn btn-primary btn-xs button_check" 
-												th:id="${voter.cedula}"  th:text="'Marcar'"></a>
-												<a th:if="${voter.check}" class="btn btn-warning btn-xs button_uncheck"
-												th:id="${voter.cedula}" th:text="'Quitar'"></a>
-											
-										</td>	
+										<td><a th:if="${voter.check==0}"
+											class="btn btn-primary btn-xs button_check"
+											th:id="${voter.cedula}" th:text="'Marcar'"></a> <a
+											th:if="${voter.check==1}"
+											class="btn btn-warning btn-xs button_uncheck"
+											th:id="${voter.cedula}" th:text="'Quitar'"></a></td>
 									</tr>
 								</tbody>
 
@@ -84,77 +86,82 @@
 	</div>
 
 	<footer th:replace="layout/layout :: footer"></footer>
+	<input type="hidden" id="urlAjax4Mark" th:value="@{'/voter/mark'}" />
+	<input type="hidden" id="urlAjax4UnMark" th:value="@{'/voter/unmark'}" />
 	<!-- Menu Toggle Script -->
 	<script>
-	
-	function upper(){
-		
-	}
-		$(function(){
-			$('.upper').keyup(function(){
-				  var start = this.selectionStart;
-				  var end = this.selectionEnd;
-				  this.value = this.value.toUpperCase();
-				  this.setSelectionRange(start, end);
+		function upper() {
+
+		}
+		$(function() {
+			$('.upper').keyup(function() {
+				var start = this.selectionStart;
+				var end = this.selectionEnd;
+				this.value = this.value.toUpperCase();
+				this.setSelectionRange(start, end);
 			});
-			
+
 		});
 		$("#menu-toggle").click(function(e) {
 			e.preventDefault();
 			$("#wrapper").toggleClass("toggled");
 		});
-		
-		$(".button_check").click(function(){
-	        var dato = {
-	                'cedula' : $(this).attr('id')
-	          };
-	        //alert("Cambiar a amarillo");
-			  $.ajax({
-				  url: "/voter/mark", 
-				  type: "POST",
-		          data: dato,
-		          context:this,
-				  success: function(data){
-					  $(this).removeClass("btn-primary");
-					  $(this).removeClass("button_check");
-					  $(this).addClass("btn-warning");
-					  $(this).addClass("button_uncheck");
-					  $(this).html("Quitar");
-			  	  },
-			  	  error: function() {
-		             alert("error");
-		          }
-			  });
+
+		$(document).ready(function() {
+
+			var urlAjax4Mark = $("#urlAjax4Mark").val();
+			var urlAjax4UnMark = $("#urlAjax4UnMark").val();
+			
+			$(".button_check").click(function() {
+				var dato = {
+					'cedula' : $(this).attr('id')
+				};
+				//alert("Cambiar a amarillo");
+				$.ajax({
+					url : urlAjax4Mark,
+					type : "POST",
+					data : dato,
+					context : this,
+					success : function(data) {
+						$(this).removeClass("btn-primary");
+						$(this).removeClass("button_check");
+						$(this).addClass("btn-warning");
+						$(this).addClass("button_uncheck");
+						$(this).html("Quitar");
+						alert("Hecho");
+					},
+					error : function() {
+						alert("error");
+					}
+				});
 			});
-		
-		$(".button_uncheck").click(function(){
-	        var dato = {
-	                'cedula' : $(this).attr('id')
-	          };
-	          //alert("Cambiar a azul");
-			  $.ajax({
-				  url: "/voter/unmark", 
-				  type: "POST",
-		          data: dato,
-		          context:this,
-				  success: function(data){
-					  $(this).removeClass("btn-warning");
-					  $(this).removeClass("button_uncheck");
-					  $(this).addClass("btn-primary");
-					  $(this).addClass("button_check");
-					  $(this).html("Marcar");
-			  	  },
-			  	  error: function() {
-		             alert("error");
-		          }
-		          
-			  });
+
+			$(".button_uncheck").click(function() {
+				var dato = {
+					'cedula' : $(this).attr('id')
+				};
+				//alert("Cambiar a azul");
+				$.ajax({
+					url : urlAjax4UnMark,
+					type : "POST",
+					data : dato,
+					context : this,
+					success : function(data) {
+						$(this).removeClass("btn-warning");
+						$(this).removeClass("button_uncheck");
+						$(this).addClass("btn-primary");
+						$(this).addClass("button_check");
+						$(this).html("Marcar");
+						alert("Hecho");
+					},
+					error : function() {
+						alert("error");
+					}
+
+				});
 			});
-			
-			
-			
-			
-			
+
+		});
 	</script>
 </body>
 </html>

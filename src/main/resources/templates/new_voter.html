@@ -13,18 +13,19 @@
 					
 				    <input type="hidden" th:field="*{cedula}">
 				    <input type="hidden" th:field="*{leader}">
-					<!--  <input type="hidden" th:field="*{dob}">
+					<span id="0" th:unless="*{dob == ''}"><input type="hidden" th:field="*{dob}" disabled></span>
+    				<span id="1" th:if="*{dob == ''}"><input type="hidden" th:field="*{dob}"></span>
 					<input type="hidden" th:field="*{placeOfBirth}">
-					<input type="hidden" th:field="*{idCategoria}">
+					<input type="hidden" th:field="*{categoria}">
 					<input type="hidden" th:field="*{idSexo}">
 					<input type="hidden" th:field="*{estadoCivil}">
-					<input type="hidden" th:field="*{idOcupacion}">
-					<input type="hidden" th:field="*{idNacionalidad}">
-					<input type="hidden" th:field="*{idMunicipio}">
+					<input type="hidden" th:field="*{ocupacion}">
+					<input type="hidden" th:field="*{nacionalidad}">
+					<input type="hidden" th:field="*{municipio}">
 					<input type="hidden" th:field="*{colegioElectoral}">
 					<input type="hidden" th:field="*{munCed}">
 					<input type="hidden" th:field="*{seqCed}">
-					<input type="hidden" th:field="*{verCed}">-->
+					<input type="hidden" th:field="*{verCed}">
 					
 					
 					<div class="form-row ">
@@ -58,7 +59,7 @@
 						<div class="form-group col-md-4">
 							<label for="inputUserName">Apellido2</label> <input type="text"
 								class="form-control upper" id="upper-name" th:field="*{LastName2}" 
-								placeholder="Segundo Apellido" th:readonly="${disable}" required> <small
+								placeholder="Segundo Apellido" th:readonly="${disable}" > <small
 								class="form-text text-danger"
 								th:if="${#fields.hasErrors('LastName2')}" th:errors="*{LastName2}"></small>
 						</div>

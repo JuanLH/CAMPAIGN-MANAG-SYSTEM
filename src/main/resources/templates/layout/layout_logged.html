@@ -5,12 +5,12 @@
     <div th:fragment="sidebar" class="bg-light border-right" id="sidebar-wrapper">
         <div class="sidebar-heading">Menu Principal </div>
         <div class="list-group list-group-flush">
-            <a href="/voter/listar-simpatizantes" class="list-group-item list-group-item-action bg-light">Inicio</a>
-            <a href="/leader/nuevo-dirigente" class="list-group-item list-group-item-action bg-light">Crear Dirigente</a>
-            <a href="/leader/listar-dirigentes" class="list-group-item list-group-item-action bg-light">Ver Dirigentes</a>
-            <a href="/voter/listarxlugar" class="list-group-item list-group-item-action bg-light">Ver Simpatizantes por Sector</a>
-            <a href="/voter/listarxdirigente" class="list-group-item list-group-item-action bg-light">Ver Simpatizantes por Dirigentes</a>
-            <a href="/voter/listarxindependiente" class="list-group-item list-group-item-action bg-light">Ver Simpatizantes independientes</a>
+            <a th:href="@{'/voter/listar-simpatizantes'}" class="list-group-item list-group-item-action bg-light">Inicio</a>
+            <a th:href="@{'/leader/nuevo-dirigente'}" class="list-group-item list-group-item-action bg-light">Crear Dirigente</a>
+            <a th:href="@{'/leader/listar-dirigentes'}" class="list-group-item list-group-item-action bg-light">Ver Dirigentes</a>
+            <a th:href="@{'/voter/listarxlugar'}" class="list-group-item list-group-item-action bg-light">Ver Simpatizantes por Sector</a>
+            <a th:href="@{'/voter/listarxdirigente'}" class="list-group-item list-group-item-action bg-light">Ver Simpatizantes por Dirigentes</a>
+            <a th:href="@{'/voter/listarxindependiente'}" class="list-group-item list-group-item-action bg-light">Ver Simpatizantes independientes</a>
 
         </div>
     </div>
@@ -18,8 +18,8 @@
     <div th:fragment="sidebar_leader" class="bg-light border-right" id="sidebar-wrapper">
         <div class="sidebar-heading">Menu Principal<p th:text="${session.user_code}" th:unless="${session == null}">[...]</p></div>
         <div class="list-group list-group-flush">
-            <a href="/leader/listar-simpatizantes" class="list-group-item list-group-item-action bg-light">Inicio</a>
-            <a href="/leader/listarxlugar" class="list-group-item list-group-item-action bg-light">Ver Simpatizantes por Sector</a>  
+            <a th:href="@{/leader/listar-simpatizantes}" class="list-group-item list-group-item-action bg-light">Inicio</a>
+            <a th:href="@{/leader/listarxlugar}" class="list-group-item list-group-item-action bg-light">Ver Simpatizantes por Sector</a>  
 			<a th:href="@{/voter/entrada_simpatizante/}+${session.user_code}" class="list-group-item list-group-item-action bg-light">Registrar Simpatizante</a> 
         </div>
     </div>
@@ -35,10 +35,10 @@
                 <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
                     
                     <li class="nav-item">
-                        <a class="nav-link" href="/Dirigentes">Entrada de Dirigentes</a>
+                        <a class="nav-link" th:href="@{/Dirigentes}">Entrada de Dirigentes</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" th:href="@{/}">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <!--  
                     <li class="nav-item dropdown">

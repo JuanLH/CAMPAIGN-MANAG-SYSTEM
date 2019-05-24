@@ -58,7 +58,7 @@
 					<div class="form-group ">
 						<label for="inputUserName">Telefono</label> <input type="text"
 							class="form-control upper" th:field="*{phone}"
-							placeholder="8295555555" required> <small
+							placeholder="##########" required> <small
 							class="form-text text-danger"
 							th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></small>
 					</div>
@@ -96,7 +96,7 @@
 						
 							<label for="inputUserName">Estado Civil</label> <input type="text"
 								class="form-control upper" id="upper-name" th:field="*{estadoCivil}" 
-								placeholder="Nombre completo"  required> <small
+								placeholder="NO SUPLIDO"  required> <small
 								class="form-text text-danger"
 								th:if="${#fields.hasErrors('estadoCivil')}" th:errors="*{estadoCivil}"></small>
 					</div>	
@@ -104,7 +104,7 @@
 						<div class="form-group col-md-4">
 							<label for="inputUserName">Lugar de nacimiento</label> <input type="text"
 								class="form-control upper" id="upper-name" th:field="*{placeOfBirth}" 
-								placeholder="Primer Apellido" th:readonly="${disable}" required> <small
+								placeholder="NO SUPLIDO" th:readonly="${disable}" required> <small
 								class="form-text text-danger"
 								th:if="${#fields.hasErrors('placeOfBirth')}" th:errors="*{placeOfBirth}"></small>
 						</div>
@@ -112,7 +112,7 @@
 						<div class="form-group col-md-4">
 							<label for="inputUserName">Fecha Nacimiento</label> <input type="text"
 								class="form-control upper" id="upper-name" th:field="*{dob}" 
-								placeholder="" th:readonly="${disable}" required> <small
+								placeholder="NO SUPLIDO" th:readonly="${disable}" required> <small
 								class="form-text text-danger"
 								th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}"></small>
 						</div>
@@ -123,7 +123,7 @@
 						
 							<label for="inputUserName">Sexo</label> <input type="text"
 								class="form-control upper" id="upper-name" th:field="*{idSexo}" 
-								placeholder="Nombre completo"  required> <small
+								placeholder="NO SUPLIDO"  required> <small
 								class="form-text text-danger"
 								th:if="${#fields.hasErrors('idSexo')}" th:errors="*{idSexo}"></small>
 					</div>	
@@ -131,7 +131,7 @@
 						<div class="form-group col-md-4">
 							<label for="inputUserName">Dirigente:</label> <input type="text"
 								class="form-control upper" id="upper-name" th:value="${leader}" 
-								placeholder="Primer Apellido" th:readonly="${disable}" required> <small
+								placeholder="SIN DIRIGENTE" th:readonly="${disable}" required> <small
 								class="form-text text-danger"
 								th:if="${#fields.hasErrors('placeOfBirth')}" th:errors="*{placeOfBirth}"></small>
 						</div>
@@ -139,7 +139,7 @@
 						<div class="form-group col-md-4">
 							<label for="inputUserName">Fecha de Registro</label> <input type="text"
 								class="form-control upper" id="upper-name" th:field="*{registrationDate}" 
-								placeholder=""  required> <small
+								placeholder="NO SUPLIDO"  required> <small
 								class="form-text text-danger"
 								th:if="${#fields.hasErrors('registrationDate')}" th:errors="*{registrationDate}"></small>
 						</div>

@@ -1,5 +1,7 @@
 package com.juanlhiciano.app.controller;
 
+import java.sql.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -77,6 +79,7 @@ public class VoterController {
         return "enter_cedula";
     }
     
+    
     //2
     @RequestMapping(value="/nuevo_simpatizante/{leaderCode}",method = RequestMethod.POST)
     public String saveVoter(@Valid Padron2020 simpatizante, BindingResult result,RedirectAttributes flash,@PathVariable(value="leaderCode") String leaderCode,Model model) {
@@ -90,6 +93,11 @@ public class VoterController {
     	if(finded != null && finded.getCedula() == simpatizante.getCedula()) {
     		FieldError f = new FieldError("cedula", "cedula", "La cedula "+simpatizante.getCedula()+" esta siendo usada por otro simpatizante");
     		result.addError(f);
+    		
+    		model.addAttribute("title", "Unete");
+        	model.addAttribute("simpatizante", simpatizante);
+        	flash.addFlashAttribute("warning","La cedula "+simpatizante.getCedula()+" esta siendo usada por otro simpatizante");
+        	return (leaderCode != null)?"redirect:/voter/entrada_simpatizante/"+leaderCode:"redirect:/voter/entrada_simpatizante";
     	}
     	
     	
@@ -97,7 +105,6 @@ public class VoterController {
     		model.addAttribute("title", "Unete");
         	model.addAttribute("simpatizante", simpatizante);
     		flash.addFlashAttribute("warning","Cedula incorrecta, solo 11 numeros");
-    		//return "enter_cedula";
     		return (leaderCode != null)?"redirect:/voter/entrada_simpatizante/"+leaderCode:"redirect:/voter/entrada_simpatizante";
     	}
     	
@@ -118,7 +125,7 @@ public class VoterController {
     		citizen.setNames(padron.getNombres());
     		citizen.setLastName1(padron.getApellido1());
     		citizen.setLastName2(padron.getApellido2());
-    		citizen.setDob(padron.getFechaNacimiento());
+    		citizen.setDob((padron.getFechaNacimiento().equals(""))?null:padron.getFechaNacimiento());
     		citizen.setPlaceOfBirth(padron.getLugarNacimiento());
     		citizen.setCategoria(padron.getIDCategoria());
     		citizen.setIdSexo(padron.getIdSexo());
@@ -130,7 +137,7 @@ public class VoterController {
     		citizen.setMunCed(padron.getMunCed());
     		citizen.setSeqCed(padron.getSeqCed());
     		citizen.setVerCed(padron.getVerCed());
-    		voterService.save(citizen);
+    		//voterService.save(citizen);
     	}
     	
     	
@@ -153,6 +160,7 @@ public class VoterController {
     	String pensar = voter.getPensar();
     	Sector sector = voter.getSector();
     	Leader leader = voter.getLeader();
+    	Date dob =  (Date) voter.getDob();
     	System.out.println(voter.getCedula());
     	try {
     		voter = voterService.findById(voter.getCedula());
@@ -160,6 +168,7 @@ public class VoterController {
     	catch(Exception e) {
     		System.out.println("Exception ->"+e.getMessage());
     	}
+    	voter.setDob(dob);
     	voter.setEmail(email);
     	voter.setPhone(phone);
     	voter.setNecesidad(necesidad);
@@ -180,24 +189,7 @@ public class VoterController {
     		result.addError(f);
     	}
     	
-    	String url = "https://www.google.com/recaptcha/api/siteverify";
-		String params = "?secret=6LchAJgUAAAAALGyxvElCD8XE7R_KKccuYv7tZ3-&response="+captchaResponse;
-		
-		ReCaptchaResponse reCaptchaResponse = restTemplate.exchange(url+params, HttpMethod.POST, null, ReCaptchaResponse.class).getBody();
-		
-		
-		if(reCaptchaResponse.isSuccess()) {
-			
-			voterService.save(voter);
-			return "redirect:/";
-		} else {
-			flash.addFlashAttribute("error", "Verifique el Capcha");
-			//return "redirect:"+request.getHeader("Referer");
-			FieldError f = new FieldError("verCed", "verCed", "Verifique el capcha");
-    		result.addError(f);
-			//voterService.save(voter);
-			//return (voter.getLeader()!=null)?"redirect:/voter/entrada_simpatizante/"+voter.getLeader().getCode()+"":"redirect:/voter/entrada_simpatizante";
-		}
+    	
 		
 		if(result.hasErrors()) {
 			System.out.println("Error Count = "+result.getErrorCount());
@@ -210,11 +202,29 @@ public class VoterController {
 			model.addAttribute("sectors", sectorService.findAll());
 			//boolean disable = (voter.getNames() != null)? true: false;
 			//model.addAttribute("disable", disable);
+			return "new_voter";
     		
     	}
 		
-		return "new_voter";
 		
+		String url = "https://www.google.com/recaptcha/api/siteverify";
+		String params = "?secret=6LchAJgUAAAAALGyxvElCD8XE7R_KKccuYv7tZ3-&response="+captchaResponse;
+		
+		ReCaptchaResponse reCaptchaResponse = restTemplate.exchange(url+params, HttpMethod.POST, null, ReCaptchaResponse.class).getBody();
+		
+		
+		if(reCaptchaResponse.isSuccess()) {
+			voterService.save(voter);
+			return "redirect:/";
+		} else {
+			flash.addFlashAttribute("error", "Verifique el Capcha");
+			//return "redirect:"+request.getHeader("Referer");
+			FieldError f = new FieldError("verCed", "verCed", "Verifique el capcha");
+    		result.addError(f);
+			//voterService.save(voter);
+			//return (voter.getLeader()!=null)?"redirect:/voter/entrada_simpatizante/"+voter.getLeader().getCode()+"":"redirect:/voter/entrada_simpatizante";
+    		return "new_voter";
+		}
 		
     }
     
@@ -464,7 +474,7 @@ public class VoterController {
 			return "redirect:/voter/listar-simpatizantes";
     	}
     	
-    	voter.setCheck(true);
+    	voter.setCheck((short)1);
     	try {
     		voterService.save(voter);
     		message = "Se agrego correctamente";
@@ -489,7 +499,7 @@ public class VoterController {
 			return "redirect:/voter/listar-simpatizantes";
     	}
     	
-    	voter.setCheck(false);
+    	voter.setCheck((short)0);
     	try {
     		voterService.save(voter);
     		message = "Se quito correctamente";

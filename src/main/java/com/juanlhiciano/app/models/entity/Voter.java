@@ -3,12 +3,15 @@ package com.juanlhiciano.app.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import net.bytebuddy.implementation.bind.annotation.Empty;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+
 import java.util.Date;
 
 @Entity
@@ -22,16 +25,15 @@ public class Voter implements Serializable {
     @NotEmpty
     String cedula;//***
 
-    
+    @NotEmpty
     @Pattern(regexp="^[ña-zÑA-Z ]+(([',. -][ña-zÑA-Z ])?[ña-zÑA-Z]*)*$")
     String names;
     
-    
+    @NotEmpty
     @Pattern(regexp="^[ña-zÑA-Z]+(([',. -][ña-zÑA-Z ])?[ña-zÑA-Z]*)*$")
     String LastName1;
-
     
-    @Pattern(regexp="^[ña-zÑA-Z]+(([',. -][ña-zÑA-Z ])?[ña-zÑA-Z]*)*$")
+    @Pattern(regexp="^$|[ña-zÑA-Z]+(([',. -][ña-zÑA-Z])?[ña-zÑA-Z]*)*$")
 	String LastName2;
     
     Date dob;
@@ -76,20 +78,21 @@ public class Voter implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     Sector sector;//***
     
-    @Pattern(regexp="^[ña-zÑA-Z ]+(([',. -][ña-zÑA-Z ])?[ña-zÑA-Z]*)*$")
+    
+    @Pattern(regexp="^$|[ña-zÑA-Z0-9 ]+(([',. - ][ña-zÑA-Z0-9 ])?[ña-zÑA-Z0-9 ]*)*$")
     String pensar;//***
     
-    @Pattern(regexp="^[ña-zÑA-Z ]+(([',. -][ña-zÑA-Z ])?[ña-zÑA-Z]*)*$")
+    
+    @Pattern(regexp="^$|[ña-zÑA-Z0-9 ]+(([',. - ][ña-zÑA-Z0-9 ])?[ña-zÑA-Z0-9 ]*)*$")
     String necesidad;//***
     
     @Column(name="check_mark")
-    Boolean check;
+    short check;
 
-    @PreUpdate
     @PrePersist
     public void prePersist() {
         registration = new Date();
-        check = false;
+        check = 0;
     }
     
     //---------------------------------------------------
@@ -288,11 +291,11 @@ public class Voter implements Serializable {
 		this.necesidad = necesidad;
 	}
 
-	public Boolean getCheck() {
+	public short getCheck() {
 		return check;
 	}
 
-	public void setCheck(Boolean check) {
+	public void setCheck(short check) {
 		this.check = check;
 	}
 	
